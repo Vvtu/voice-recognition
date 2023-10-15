@@ -1,0 +1,40 @@
+body {
+  box-sizing: border-box;
+  scrollbar-width: thin;
+  font-family: 'Open Sans', sans-serif;
+}
+
+:root {
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  border-radius: 3px;
+  box-shadow: inset 0 0 5px #aeb5bd;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background-color: #aaa;
+  border-radius: 3px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}

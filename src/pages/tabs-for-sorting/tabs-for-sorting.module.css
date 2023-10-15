@@ -1,0 +1,86 @@
+.sortTabsGroup {
+  flex-shrink: 0;
+  font-family: 'Open Sans';
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px; /* 166.667% */
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: stretch;
+  background-color: #fff;
+  border: 1px solid #dfe5ec;
+  border-radius: 5px;
+}
+
+.firstTab {
+  height: 50px;
+  width: 33.33%;
+  color: #4a4a4a;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.firstTab:hover {
+  color: #2196f3;
+}
+.middleTab {
+  height: 50px;
+  width: 33.33%;
+  color: #4a4a4a;
+  text-align: center;
+  border-left: 1px solid #dfe5ec;
+  border-right: 1px solid #dfe5ec;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.middleTab:hover {
+  color: #2196f3;
+}
+.lastTab {
+  height: 50px;
+  width: 33.33%;
+
+  color: #4a4a4a;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.lastTab:hover {
+  color: #2196f3;
+}
+
+.activeFirstTab {
+  color: #fff;
+  background-color: #2196f3;
+  border-radius: 5px 0 0 5px;
+}
+.activeFirstTab:hover {
+  filter: brightness(0.9);
+  color: #fff !important;
+}
+.activeMiddleTab {
+  color: #fff;
+  background-color: #2196f3;
+}
+.activeMiddleTab:hover {
+  filter: brightness(0.9);
+  color: #fff !important;
+}
+.activeLastTab {
+  color: #fff;
+  background-color: #2196f3;
+  border-radius: 0 5px 5px 0;
+}
+.activeLastTab:hover {
+  filter: brightness(0.9);
+  color: #fff !important;
+}

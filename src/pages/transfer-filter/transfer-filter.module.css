@@ -1,0 +1,45 @@
+.layout {
+  width: 232px;
+  flex-shrink: 0;
+  padding: 20px 0 10px 0;
+}
+
+.header {
+  padding: 0 20px;
+  color: #4a4a4a;
+  font-family: 'Open Sans';
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 12px; /* 100% */
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.itemContainer {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: stretch;
+  padding: 0 20px;
+}
+.itemContainer:hover {
+  background: #f1fcff;
+}
+
+.itemSubcontainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.itemText {
+  color: #4a4a4a;
+  font-family: Open Sans;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px; /* 153.846% */
+}
