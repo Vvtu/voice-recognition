@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 
 import cssStyles from './app.module.css';
-// import { TabsForSorting } from './tabs-for-sorting';
+import { LanguageTabs } from './language-tabs';
 // import { Tickets } from './tickets';
 // import { TransferFilter } from './transfer-filter';
 
@@ -80,12 +80,13 @@ export function App() {
         <div className={cssStyles.logoContainer}>
           <div>{start}</div>
         </div>
+        <LanguageTabs />
 
         {/* <div className={cssStyles['ticketsContainer']}>
           <div className={cssStyles['ticketsSubcontainer']}>
             <TransferFilter />
             <div className={cssStyles['rightContainer']}>
-              <TabsForSorting />
+              <LanguageTabs />
               <Tickets />
             </div>
           </div>

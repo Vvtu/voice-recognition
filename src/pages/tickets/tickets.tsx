@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { PAGE_SIZE } from '@/app-constants';
-import { SORTING_PARAM, TRANSFER_PARAM, ISortingParam } from '@/app-constants';
+import { LANGUAGE_PARAM, TRANSFER_PARAM, ILanguageParam } from '@/app-constants';
 import { useGetTickets } from '@/pages/hooks/query-hooks';
 import { ITicket } from '@/services/ticket-validation-scheme';
 
@@ -36,7 +36,7 @@ export function Tickets() {
 
   const transferParam000 = parseInt(searchParams.get(TRANSFER_PARAM) ?? '', 10);
   const transferParam = isNaN(transferParam000) ? -1 : transferParam000;
-  const sortingParam = searchParams.get(SORTING_PARAM) ?? ISortingParam.cheep;
+  const sortingParam = searchParams.get(LANGUAGE_PARAM) ?? ILanguageParam.cheep;
 
   const pagesSortedAndFiltered = useMemo(() => {
     return [...allPages]
@@ -51,7 +51,7 @@ export function Tickets() {
       })
       .sort((a, b) => {
         switch (sortingParam) {
-          case ISortingParam.cheep:
+          case ILanguageParam.cheep:
             if (a.price > b.price) {
               return 1;
             } else {
@@ -66,7 +66,7 @@ export function Tickets() {
               }
             }
 
-          case ISortingParam.speed:
+          case ILanguageParam.speed:
             if (a.segments[0].duration > b.segments[0].duration) {
               return 1;
             } else {
@@ -80,7 +80,7 @@ export function Tickets() {
                 }
               }
             }
-          case ISortingParam.optimal: {
+          case ILanguageParam.optimal: {
             return 1;
           }
           default:
