@@ -1,0 +1,41 @@
+.appContainer {
+  width: 960px;
+  min-height: calc(100vh - 100px);
+
+  margin: 0 auto;
+  padding: 0px;
+
+  background-color: #f3f7fa;
+}
+
+.logoContainer {
+  width: 100%;
+  margin-top: 32px;
+  display: flex;
+  justify-content: center;
+}
+
+.ticketsContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.ticketsSubcontainer {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.rightContainer {
+  width: 502px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: flex-start;
+  align-items: stretch;
+}
+
+.height0 {
+  height: 0;
+}
