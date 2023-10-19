@@ -30,7 +30,6 @@ export function Speach() {
       const spokenWordsArr = Array.from(e.results)
         .map((result1) => result1[0])
         .map((result) => result.transcript);
-      // .join('');
       console.log('[33m spokenWordsArr = ', spokenWordsArr); //TODO - delete vvtu
       setSpokenWords(spokenWordsArr);
     });
