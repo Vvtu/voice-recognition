@@ -16,9 +16,9 @@
   border-radius: 5px;
 }
 
-.firstTab {
+.tab {
   height: 50px;
-  width: 33.33%;
+  width: 25%;
   color: #4a4a4a;
   text-align: center;
   display: flex;
@@ -26,37 +26,17 @@
   justify-content: center;
   cursor: pointer;
 }
-.firstTab:hover {
+.tab:hover {
   color: #2196f3;
 }
-.middleTab {
-  height: 50px;
-  width: 33.33%;
-  color: #4a4a4a;
-  text-align: center;
+
+.middleTab1 {
+  border-left: 1px solid #dfe5ec;
+}
+
+.middleTab2 {
   border-left: 1px solid #dfe5ec;
   border-right: 1px solid #dfe5ec;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-.middleTab:hover {
-  color: #2196f3;
-}
-.lastTab {
-  height: 50px;
-  width: 33.33%;
-
-  color: #4a4a4a;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-.lastTab:hover {
-  color: #2196f3;
 }
 
 .activeFirstTab {
@@ -68,6 +48,7 @@
   filter: brightness(0.9);
   color: #fff !important;
 }
+
 .activeMiddleTab {
   color: #fff;
   background-color: #2196f3;
@@ -76,6 +57,7 @@
   filter: brightness(0.9);
   color: #fff !important;
 }
+
 .activeLastTab {
   color: #fff;
   background-color: #2196f3;
