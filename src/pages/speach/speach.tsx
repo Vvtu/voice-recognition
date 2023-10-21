@@ -1,16 +1,13 @@
-// import Logo from '@/pages/icons/logo.svg';
 import { useState, useEffect, useRef } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
 
 import classNames from 'classnames';
 
-import { LANGUAGE_PARAM, ILanguageParam } from '@/app-constants';
+import { LANGUAGE_PARAM, ILanguageParam, WORDS_LIMIT } from '@/app-constants';
 
 import micIcon from './mic.svg';
 import styles from './speach.module.css';
-// import { Tickets } from './tickets';
-// import { TransferFilter } from './transfer-filter';
 
 export function Speach() {
   const [searchParams /*, setSearchParams */] = useSearchParams();
@@ -18,8 +15,16 @@ export function Speach() {
   const languageParam = searchParams.get(LANGUAGE_PARAM) ?? ILanguageParam.russian;
 
   const [workingStatus, setWorkingStatus] = useState<'on' | 'off'>('off');
-  const [spokenWords, setSpokenWords] = useState<string[]>([]);
+  const [spokenWords, setSpokenWords] = useState<SpeechRecognitionAlternative[]>([]);
   const recognitionRef = useRef<SpeechRecognition | undefined>();
+
+  const limitExceeded = spokenWords.length >= WORDS_LIMIT;
+
+  useEffect(() => {
+    if (limitExceeded) {
+      setWorkingStatus('off');
+    }
+  }, [limitExceeded, workingStatus]);
 
   useEffect(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -32,7 +37,7 @@ export function Speach() {
       console.log('[33m e.results = ', e.results); //TODO - delete vvtu
       const spokenWordsArr = Array.from(e.results)
         .map((result1) => result1[0])
-        .map((result) => result.transcript);
+        .map((result) => result);
       console.log('[33m spokenWordsArr = ', spokenWordsArr); //TODO - delete vvtu
       setSpokenWords(spokenWordsArr);
     });
@@ -53,6 +58,10 @@ export function Speach() {
     }
   }, [workingStatus]);
 
+  const averageConfidence =
+    spokenWords.reduce((accumulator, currentValue) => accumulator + currentValue.confidence, 0) /
+    spokenWords.length;
+
   return (
     <>
       <div className={styles.centerContainer}>
@@ -64,6 +73,7 @@ export function Speach() {
           onClick={() => {
             if (workingStatus === 'off') {
               setWorkingStatus('on');
+              setSpokenWords([]);
             } else {
               setWorkingStatus('off');
             }
@@ -76,29 +86,23 @@ export function Speach() {
         </div>
       </div>
       <br />
-      <br />
-      <br />
-      <div className={styles.appContainer}>
-        <div className={styles.height0}>&nbsp;</div>
-        <div className={styles.logoContainer}>
-          {/* <img src={Logo} alt="Logo icon" width="82" height="89" /> */}
+
+      {spokenWords.map((word, index) => (
+        <div className={styles.wordContainer} key={`${word}-${index}`}>
+          <div className={classNames(styles.index, styles.grey)}>{`${index + 1}.`}</div>
+          <div className={styles.black}>{word.transcript.toUpperCase()}</div>
+          <div className={styles.grow} />
+          <div className={styles.grey}>{`${(word.confidence * 100).toFixed(2)}%`}</div>
         </div>
-        <div className={styles.logoContainer}>
-          <div>{workingStatus}</div>
+      ))}
+      {spokenWords.length > 0 && (
+        <div className={classNames(styles.wordContainer)}>
+          <div className={styles.grow} />
+          <div
+            className={classNames(limitExceeded ? styles.black : styles.grey, styles.totalLine)}
+          >{`${(averageConfidence * 100).toFixed(2)}%`}</div>
         </div>
-        {spokenWords.map((word) => (
-          <div>{word.toLowerCase()}</div>
-        ))}
-        {/* <div className={styles['ticketsContainer']}>
-          <div className={styles['ticketsSubcontainer']}>
-            <TransferFilter />
-            <div className={styles['rightContainer']}>
-              <LanguageTabs />
-              <Tickets />
-            </div>
-          </div>
-        </div> */}
-      </div>
+      )}
     </>
   );
 }

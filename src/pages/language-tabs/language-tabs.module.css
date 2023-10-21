@@ -1,8 +1,8 @@
 .tabsGroup {
   margin: 20px;
   flex-shrink: 0;
-  font-family: 'Open Sans';
-  font-size: var(--font-size-5);
+  font-family: Verdana;
+  font-size: var(--font-size-22);
   font-style: normal;
   font-weight: 600;
   line-height: 20px; /* 166.667% */
@@ -12,7 +12,7 @@
   align-items: center;
   justify-content: stretch;
   background-color: #fff;
-  border: 1px solid #dfe5ec;
+  border: 2px solid #dfe5ec;
   border-radius: var(--border-radius-5);
 }
 
@@ -31,12 +31,12 @@
 }
 
 .middleTab1 {
-  border-left: 1px solid #dfe5ec;
+  border-left: 2px solid #dfe5ec;
 }
 
 .middleTab2 {
-  border-left: 1px solid #dfe5ec;
-  border-right: 1px solid #dfe5ec;
+  border-left: 2px solid #dfe5ec;
+  border-right: 2px solid #dfe5ec;
 }
 
 .activeFirstTab {

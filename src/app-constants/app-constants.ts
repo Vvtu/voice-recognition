@@ -34,3 +34,5 @@ export const LANGUAGE_OBJ = {
 //  lang = 'zh-CN';
 
 export const PAGE_SIZE = 5;
+
+export const WORDS_LIMIT = 5;

@@ -1,7 +1,7 @@
 body {
   box-sizing: border-box;
   scrollbar-width: thin;
-  font-family: 'Open Sans', sans-serif;
+  font-family: Verdana;
 }
 
 :root {
@@ -12,7 +12,8 @@ body {
   -webkit-text-size-adjust: 100%;
 
   --border-radius-5: 15px;
-  --font-size-5: 22px;
+  --font-size-22: 22px;
+  --font-size-28: 32px;
 }
 
 ::-webkit-scrollbar {
