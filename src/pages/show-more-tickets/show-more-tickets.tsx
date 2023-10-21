@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 import { PAGE_SIZE } from '@/app-constants';
 
-import cssStyles from './show-more-tickets.module.css';
+import styles from './show-more-tickets.module.css';
 
 export const ShowMoreTickets = React.memo(function ({
   showMoreTicketsIndex,
@@ -22,8 +22,8 @@ export const ShowMoreTickets = React.memo(function ({
   return (
     <>
       <button
-        className={classNames(cssStyles.buttonContainer, {
-          [cssStyles.disabled]: nextPageLength <= 0,
+        className={classNames(styles.buttonContainer, {
+          [styles.disabled]: nextPageLength <= 0,
         })}
         onClick={handleOnClick}
       >

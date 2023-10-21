@@ -1,26 +1,21 @@
-// import Logo from '@/pages/icons/logo.svg';
-import { useState, useEffect, useRef } from 'react';
-
 import { Speach } from '@/pages/speach/speach';
 
-import cssStyles from './app.module.css';
+import styles from './app.module.css';
 import { LanguageTabs } from './language-tabs';
-// import { Tickets } from './tickets';
-// import { TransferFilter } from './transfer-filter';
 
 export function App() {
   return (
     <>
-      <div className={cssStyles.appContainer}>
-        <div className={cssStyles.height0}>&nbsp;</div>
+      <div className={styles.appContainer}>
+        <div className={styles.height0}>&nbsp;</div>
 
         <LanguageTabs />
         <Speach />
 
-        {/* <div className={cssStyles['ticketsContainer']}>
-          <div className={cssStyles['ticketsSubcontainer']}>
+        {/* <div className={styles['ticketsContainer']}>
+          <div className={styles['ticketsSubcontainer']}>
             <TransferFilter />
-            <div className={cssStyles['rightContainer']}>
+            <div className={styles['rightContainer']}>
               <LanguageTabs />
               <Tickets />
             </div>

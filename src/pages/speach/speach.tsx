@@ -2,19 +2,21 @@
 import { useState, useEffect, useRef } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
+import classNames from 'classnames';
 
 import { LANGUAGE_PARAM, ILanguageParam } from '@/app-constants';
 
-import cssStyles from './speach.module.css';
+import micIcon from './mic.svg';
+import styles from './speach.module.css';
 // import { Tickets } from './tickets';
 // import { TransferFilter } from './transfer-filter';
 
 export function Speach() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams /*, setSearchParams */] = useSearchParams();
 
   const languageParam = searchParams.get(LANGUAGE_PARAM) ?? ILanguageParam.russian;
 
-  const [start, setStart] = useState<'on' | 'off'>('off');
+  const [workingStatus, setWorkingStatus] = useState<'on' | 'off'>('off');
   const [spokenWords, setSpokenWords] = useState<string[]>([]);
   const recognitionRef = useRef<SpeechRecognition | undefined>();
 
@@ -38,46 +40,50 @@ export function Speach() {
   }, [languageParam]);
 
   useEffect(() => {
-    if (start === 'on') {
+    if (workingStatus === 'on') {
       try {
         recognitionRef.current?.start();
-        // doesn't prevent error "Failed to execute 'start' on 'SpeechRecognition': recognition has already started"
+        // doesn't prevent error "Failed to execute 'workingStatus' on 'SpeechRecognition': recognition has already started"
       } catch (error) {
         console.error(error);
       }
     } else {
       recognitionRef.current?.stop();
     }
-  }, [start]);
+  }, [workingStatus]);
 
   return (
     <>
-      <div className={cssStyles.appContainer}>
-        <div className={cssStyles.height0}>&nbsp;</div>
-        <div className={cssStyles.logoContainer}>
-          <button
+      <div className={styles.appContainer}>
+        <div className={styles.height0}>&nbsp;</div>
+        <div className={styles.logoContainer}>
+          <div
+            className={classNames(styles.micButtonContaineer, styles.micButtonContaineerOff)}
             onClick={() => {
-              if (start === 'off') {
-                setStart('on');
+              if (workingStatus === 'off') {
+                setWorkingStatus('on');
               } else {
-                setStart('off');
+                setWorkingStatus('off');
               }
             }}
           >
-            {start === 'off' ? 'Старт!' : 'Стоп!'}
-          </button>
+            <div className={styles.micButton}>
+              <img src={micIcon} alt="micIcon" />
+              {'Микрофон'}
+            </div>
+          </div>
           {/* <img src={Logo} alt="Logo icon" width="82" height="89" /> */}
         </div>
-        <div className={cssStyles.logoContainer}>
-          <div>{start}</div>
+        <div className={styles.logoContainer}>
+          <div>{workingStatus}</div>
         </div>
         {spokenWords.map((word) => (
-          <div>{word}</div>
+          <div>{word.toLowerCase()}</div>
         ))}
-        {/* <div className={cssStyles['ticketsContainer']}>
-          <div className={cssStyles['ticketsSubcontainer']}>
+        {/* <div className={styles['ticketsContainer']}>
+          <div className={styles['ticketsSubcontainer']}>
             <TransferFilter />
-            <div className={cssStyles['rightContainer']}>
+            <div className={styles['rightContainer']}>
               <LanguageTabs />
               <Tickets />
             </div>

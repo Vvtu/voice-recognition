@@ -1,4 +1,11 @@
 .appContainer {
+  font-family: 'Open Sans';
+  font-size: var(--font-size-5);
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px; /* 166.667% */
+  letter-spacing: 0.5px;
+
   width: 960px;
   min-height: calc(100vh - 100px);
 
@@ -6,6 +13,41 @@
   padding: 0px;
 
   background-color: #f3f7fa;
+}
+
+.micButtonContaineer {
+  height: 50px;
+  width: 25%;
+
+  font-family: 'Open Sans';
+  font-size: var(--font-size-5);
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px; /* 166.667% */
+  letter-spacing: 0.5px;
+  border: 1px solid #dfe5ec;
+  border-radius: var(--border-radius-5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #fff;
+  background-color: red;
+}
+
+.micButtonContaineerOn {
+  /* */
+}
+
+.micButtonContaineerOff {
+  opacity: 0.5;
+  background-color: grey;
+}
+
+.micButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .logoContainer {

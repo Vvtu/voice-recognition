@@ -10,6 +10,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
+  --border-radius-5: 15px;
+  --font-size-5: 22px;
 }
 
 ::-webkit-scrollbar {

@@ -8,7 +8,7 @@ import { getNewSearcParams } from '@/utils/get-new-searc-params';
 
 import checkIconChecked from './check-icon-checked.svg';
 import checkIconEmpty from './check-icon-empty.svg';
-import cssStyles from './transfer-filter.module.css';
+import styles from './transfer-filter.module.css';
 
 const ITEMS = [
   { value: -1, label: 'Все' },
@@ -36,21 +36,17 @@ export function TransferFilter() {
   }
 
   return (
-    <div className={classNames(cssStyles.layout, panelStyles.panelColorAndBorder)}>
-      <div className={cssStyles.header}>Количество пересадок</div>
+    <div className={classNames(styles.layout, panelStyles.panelColorAndBorder)}>
+      <div className={styles.header}>Количество пересадок</div>
       {ITEMS.map(({ value, label }) => (
-        <div
-          key={label}
-          className={cssStyles.itemContainer}
-          onClick={() => handleItemClicked(value)}
-        >
-          <div className={cssStyles.itemSubcontainer}>
+        <div key={label} className={styles.itemContainer} onClick={() => handleItemClicked(value)}>
+          <div className={styles.itemSubcontainer}>
             {transferParam === value ? (
               <img src={checkIconChecked} alt="icon checked" width="20px" height="20px" />
             ) : (
               <img src={checkIconEmpty} alt="icon checked" width="20px" height="20px" />
             )}
-            <div className={cssStyles.itemText}>{label}</div>
+            <div className={styles.itemText}>{label}</div>
           </div>
         </div>
       ))}

@@ -1,11 +1,8 @@
-:root {
-  --border-radius-5: 15px;
-}
 .tabsGroup {
   margin: 20px;
   flex-shrink: 0;
   font-family: 'Open Sans';
-  font-size: 22px;
+  font-size: var(--font-size-5);
   font-style: normal;
   font-weight: 600;
   line-height: 20px; /* 166.667% */
