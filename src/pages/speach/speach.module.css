@@ -15,6 +15,13 @@
   background-color: #f3f7fa;
 }
 
+.centerContainer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .micButtonContaineer {
   height: 50px;
   width: 25%;
@@ -35,8 +42,20 @@
   background-color: red;
 }
 
+@keyframes logo-opacity {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .micButtonContaineerOn {
-  /* */
+  animation: logo-opacity infinite 2s linear;
 }
 
 .micButtonContaineerOff {

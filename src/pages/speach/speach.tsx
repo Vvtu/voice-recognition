@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
+
 import classNames from 'classnames';
 
 import { LANGUAGE_PARAM, ILanguageParam } from '@/app-constants';
@@ -54,24 +55,32 @@ export function Speach() {
 
   return (
     <>
+      <div className={styles.centerContainer}>
+        <div
+          className={classNames(
+            styles.micButtonContaineer,
+            workingStatus === 'off' ? styles.micButtonContaineerOff : styles.micButtonContaineerOn,
+          )}
+          onClick={() => {
+            if (workingStatus === 'off') {
+              setWorkingStatus('on');
+            } else {
+              setWorkingStatus('off');
+            }
+          }}
+        >
+          <div className={styles.micButton}>
+            <img src={micIcon} alt="micIcon" />
+            {'Микрофон'}
+          </div>
+        </div>
+      </div>
+      <br />
+      <br />
+      <br />
       <div className={styles.appContainer}>
         <div className={styles.height0}>&nbsp;</div>
         <div className={styles.logoContainer}>
-          <div
-            className={classNames(styles.micButtonContaineer, styles.micButtonContaineerOff)}
-            onClick={() => {
-              if (workingStatus === 'off') {
-                setWorkingStatus('on');
-              } else {
-                setWorkingStatus('off');
-              }
-            }}
-          >
-            <div className={styles.micButton}>
-              <img src={micIcon} alt="micIcon" />
-              {'Микрофон'}
-            </div>
-          </div>
           {/* <img src={Logo} alt="Logo icon" width="82" height="89" /> */}
         </div>
         <div className={styles.logoContainer}>
