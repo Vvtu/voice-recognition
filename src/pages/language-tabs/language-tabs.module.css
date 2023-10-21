@@ -1,8 +1,11 @@
+:root {
+  --border-radius-5: 15px;
+}
 .tabsGroup {
   margin: 20px;
   flex-shrink: 0;
   font-family: 'Open Sans';
-  font-size: 12px;
+  font-size: 22px;
   font-style: normal;
   font-weight: 600;
   line-height: 20px; /* 166.667% */
@@ -13,7 +16,7 @@
   justify-content: stretch;
   background-color: #fff;
   border: 1px solid #dfe5ec;
-  border-radius: 5px;
+  border-radius: var(--border-radius-5);
 }
 
 .tab {
@@ -42,7 +45,7 @@
 .activeFirstTab {
   color: #fff;
   background-color: #2196f3;
-  border-radius: 5px 0 0 5px;
+  border-radius: var(--border-radius-5) 0 0 var(--border-radius-5);
 }
 .activeFirstTab:hover {
   filter: brightness(0.9);
@@ -61,7 +64,7 @@
 .activeLastTab {
   color: #fff;
   background-color: #2196f3;
-  border-radius: 0 5px 5px 0;
+  border-radius: 0 var(--border-radius-5) var(--border-radius-5) 0;
 }
 .activeLastTab:hover {
   filter: brightness(0.9);
