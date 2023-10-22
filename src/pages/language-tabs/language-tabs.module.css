@@ -13,11 +13,11 @@
   justify-content: stretch;
   background-color: #fff;
   border: 2px solid #dfe5ec;
-  border-radius: var(--border-radius-5);
+  border-radius: var(--border-radius-15);
 }
 
 .tab {
-  height: 50px;
+  height: var(--button-height);
   width: 25%;
   color: #4a4a4a;
   text-align: center;
@@ -42,7 +42,7 @@
 .activeFirstTab {
   color: #fff;
   background-color: #2196f3;
-  border-radius: var(--border-radius-5) 0 0 var(--border-radius-5);
+  border-radius: var(--border-radius-15) 0 0 var(--border-radius-15);
 }
 .activeFirstTab:hover {
   filter: brightness(0.9);
@@ -61,7 +61,7 @@
 .activeLastTab {
   color: #fff;
   background-color: #2196f3;
-  border-radius: 0 var(--border-radius-5) var(--border-radius-5) 0;
+  border-radius: 0 var(--border-radius-15) var(--border-radius-15) 0;
 }
 .activeLastTab:hover {
   filter: brightness(0.9);

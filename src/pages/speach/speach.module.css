@@ -7,7 +7,7 @@
 }
 
 .micButtonContaineer {
-  height: 50px;
+  height: var(--button-height);
   width: 25%;
 
   font-family: Verdana;
@@ -17,7 +17,7 @@
   line-height: 20px; /* 166.667% */
   letter-spacing: 0.5px;
   border: 1px solid #dfe5ec;
-  border-radius: var(--border-radius-5);
+  border-radius: var(--border-radius-15);
   display: flex;
   align-items: center;
   justify-content: center;

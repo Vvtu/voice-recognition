@@ -11,7 +11,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 
-  --border-radius-5: 15px;
+  --button-height: 60px;
+  --border-radius-15: 15px;
   --font-size-22: 22px;
   --font-size-28: 32px;
 }
