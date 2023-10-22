@@ -122,22 +122,22 @@ export function Speach() {
       <div className={styles.layout}>
         <SettingsPanel />
         <div className={classNames(panelStyles.panelColorAndBorder, styles.flexGrow)}>
-          {spokenWords.map((word, index) => (
-            <div className={styles.wordContainer} key={`${word}-${index}`}>
-              <div className={classNames(styles.index, styles.grey)}>{`${index + 1}.`}</div>
-              <div className={styles.black}>{word.transcript}</div>
-              <div className={styles.grow} />
-              <div className={styles.grey}>{`${(
-                word.confidence *
-                100 *
-                (pronunciationСheck
-                  ? reshuffledWords[index] === spokenWords[index]?.transcript
-                    ? 1
-                    : 0
-                  : 1)
-              ).toFixed(2)}%`}</div>
-            </div>
-          ))}
+          {spokenWords.map((word, index) => {
+            const match =
+              !pronunciationСheck || reshuffledWords[index] === spokenWords[index]?.transcript;
+
+            return (
+              <div className={styles.wordContainer} key={`${word}-${index}`}>
+                <div className={classNames(styles.index, styles.grey)}>{`${index + 1}.`}</div>
+                {!match && <div className={styles.grey}>{`(${reshuffledWords[index]})\u00A0`}</div>}
+                <div className={match ? styles.black : styles.red}>{word.transcript}</div>
+                <div className={styles.grow} />
+                <div className={styles.grey}>{`${(word.confidence * (match ? 100 : 0)).toFixed(
+                  2,
+                )}%`}</div>
+              </div>
+            );
+          })}
           {workingStatus === 'on' && pronunciationСheck && reshuffledWords[spokenWords.length] && (
             <div className={classNames(styles.wordContainer, styles.micButtonContaineerOn)}>
               <div className={classNames(styles.index, styles.grey)}>{`${
