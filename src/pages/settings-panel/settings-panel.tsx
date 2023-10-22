@@ -2,7 +2,7 @@ import { useSearchParams } from 'react-router-dom';
 
 import classNames from 'classnames';
 
-import { ROBOT_VOICE_PARAM, WITH_ROBOT_VOICE } from '@/app-constants';
+import { ROBOT_VOICE_PARAM, PRONUNCIATION_СHECK } from '@/app-constants';
 import panelStyles from '@/pages/panel.module.css';
 import { getNewSearcParams } from '@/utils/get-new-searc-params';
 
@@ -26,7 +26,7 @@ export function SettingsPanel() {
   const robotVoiceParam000 = parseInt(searchParams.get(ROBOT_VOICE_PARAM) ?? '', 10);
   const robotVoiceParam = isNaN(robotVoiceParam000) ? -1 : robotVoiceParam000;
 
-  const withRobotVoice = searchParams.get(WITH_ROBOT_VOICE) ?? false;
+  const pronunciationСheck = searchParams.get(PRONUNCIATION_СHECK) ?? false;
 
   function handleItemClicked(value: number) {
     const newParams = getNewSearcParams(searchParams);
@@ -38,12 +38,12 @@ export function SettingsPanel() {
 
     setSearchParams(newParams);
   }
-  function handleWithRobotVoiceClicked(value: boolean) {
+  function handlePronunciationСheckClicked(value: boolean) {
     const newParams = getNewSearcParams(searchParams);
     if (!value) {
-      delete newParams[WITH_ROBOT_VOICE];
+      delete newParams[PRONUNCIATION_СHECK];
     } else {
-      newParams[WITH_ROBOT_VOICE] = true;
+      newParams[PRONUNCIATION_СHECK] = true;
     }
 
     setSearchParams(newParams);
@@ -53,18 +53,21 @@ export function SettingsPanel() {
     <div className={classNames(styles.layout, panelStyles.panelColorAndBorder)}>
       <div className={styles.header}>Настройки</div>
 
-      {withRobotVoice ? (
-        <div className={styles.itemContainer} onClick={() => handleWithRobotVoiceClicked(false)}>
+      {pronunciationСheck ? (
+        <div
+          className={styles.itemContainer}
+          onClick={() => handlePronunciationСheckClicked(false)}
+        >
           <div className={styles.itemSubcontainer}>
             <img src={checkIconChecked} alt="icon checked" width="40px" height="40px" />
-            <div className={styles.itemText}>{'Со звуком'}</div>
+            <div className={styles.itemText}>{'Проверка произношения'}</div>
           </div>
         </div>
       ) : (
-        <div className={styles.itemContainer} onClick={() => handleWithRobotVoiceClicked(true)}>
+        <div className={styles.itemContainer} onClick={() => handlePronunciationСheckClicked(true)}>
           <div className={styles.itemSubcontainer}>
             <img src={checkIconEmpty} alt="icon checked" width="40px" height="40px" />
-            <div className={styles.itemText}>{'Со звуком'}</div>
+            <div className={styles.itemText}>{'Проверка произношения'}</div>
           </div>
         </div>
       )}

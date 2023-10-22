@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 
 import classNames from 'classnames';
 
-import { LANGUAGE_PARAM, ILanguageParam, WORDS_LIMIT } from '@/app-constants';
+import { LANGUAGE_PARAM, ILanguageParam, WORDS_LIMIT, PRONUNCIATION_СHECK } from '@/app-constants';
 import panelStyles from '@/pages/panel.module.css';
 import { SettingsPanel } from '@/pages/settings-panel/settings-panel';
 
@@ -15,6 +15,7 @@ export function Speach() {
   const [searchParams /*, setSearchParams */] = useSearchParams();
 
   const languageParam = searchParams.get(LANGUAGE_PARAM) ?? ILanguageParam.russian;
+  const pronunciationСheck = searchParams.get(PRONUNCIATION_СHECK) ?? false;
 
   const [workingStatus, setWorkingStatus] = useState<'on' | 'off'>('off');
   const [spokenWords, setSpokenWords] = useState<SpeechRecognitionAlternative[]>([]);
