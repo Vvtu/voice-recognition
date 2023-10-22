@@ -5,6 +5,7 @@ import { useSearchParams } from 'react-router-dom';
 import classNames from 'classnames';
 
 import { LANGUAGE_PARAM, ILanguageParam, WORDS_LIMIT } from '@/app-constants';
+import panelStyles from '@/pages/panel.module.css';
 
 import micIcon from './mic.svg';
 import styles from './speach.module.css';
@@ -86,23 +87,24 @@ export function Speach() {
         </div>
       </div>
       <br />
-
-      {spokenWords.map((word, index) => (
-        <div className={styles.wordContainer} key={`${word}-${index}`}>
-          <div className={classNames(styles.index, styles.grey)}>{`${index + 1}.`}</div>
-          <div className={styles.black}>{word.transcript.toUpperCase()}</div>
-          <div className={styles.grow} />
-          <div className={styles.grey}>{`${(word.confidence * 100).toFixed(2)}%`}</div>
-        </div>
-      ))}
-      {spokenWords.length > 0 && (
-        <div className={classNames(styles.wordContainer)}>
-          <div className={styles.grow} />
-          <div
-            className={classNames(limitExceeded ? styles.black : styles.grey, styles.totalLine)}
-          >{`${(averageConfidence * 100).toFixed(2)}%`}</div>
-        </div>
-      )}
+      <div className={classNames(panelStyles.panelColorAndBorder, styles.margin20)}>
+        {spokenWords.map((word, index) => (
+          <div className={styles.wordContainer} key={`${word}-${index}`}>
+            <div className={classNames(styles.index, styles.grey)}>{`${index + 1}.`}</div>
+            <div className={styles.black}>{word.transcript.toUpperCase()}</div>
+            <div className={styles.grow} />
+            <div className={styles.grey}>{`${(word.confidence * 100).toFixed(2)}%`}</div>
+          </div>
+        ))}
+        {spokenWords.length > 0 && (
+          <div className={classNames(styles.wordContainer)}>
+            <div className={styles.grow} />
+            <div
+              className={classNames(limitExceeded ? styles.black : styles.grey, styles.totalLine)}
+            >{`${(averageConfidence * 100).toFixed(2)}%`}</div>
+          </div>
+        )}
+      </div>
     </>
   );
 }

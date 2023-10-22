@@ -56,7 +56,7 @@
 .wordContainer {
   display: flex;
   align-items: center;
-  margin: 20px 20px 0 20px;
+  padding: 20px 20px 10px 20px;
 
   font-family: Verdana;
   font-size: var(--font-size-28);
@@ -83,6 +83,10 @@
 }
 
 .totalLine {
-  padding-top: 14px;
+  padding: 20px 0 14px 0;
   border-top: solid 5px #aaa;
+}
+
+.margin20 {
+  margin: 20px;
 }
