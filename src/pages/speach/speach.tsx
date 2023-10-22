@@ -7,6 +7,8 @@ import classNames from 'classnames';
 import { LANGUAGE_PARAM, ILanguageParam, WORDS_LIMIT, PRONUNCIATION_СHECK } from '@/app-constants';
 import panelStyles from '@/pages/panel.module.css';
 import { SettingsPanel } from '@/pages/settings-panel/settings-panel';
+import { pronunciationWords } from '@/pronunciation-words/pronunciation-words';
+import { reshuffle } from '@/utils/reshuffle';
 
 import micIcon from './mic.svg';
 import styles from './speach.module.css';
@@ -14,14 +16,30 @@ import styles from './speach.module.css';
 export function Speach() {
   const [searchParams /*, setSearchParams */] = useSearchParams();
 
-  const languageParam = searchParams.get(LANGUAGE_PARAM) ?? ILanguageParam.russian;
+  const languageParam = (searchParams.get(LANGUAGE_PARAM) ??
+    ILanguageParam.russian) as ILanguageParam;
   const pronunciationСheck = searchParams.get(PRONUNCIATION_СHECK) ?? false;
 
   const [workingStatus, setWorkingStatus] = useState<'on' | 'off'>('off');
   const [spokenWords, setSpokenWords] = useState<SpeechRecognitionAlternative[]>([]);
+  const [reshuffledWords, setReshuffledWords] = useState<string[]>([]);
   const recognitionRef = useRef<SpeechRecognition | undefined>();
-
+  console.log('[33m reshuffledWords = ', reshuffledWords); //TODO - delete vvtu
   const limitExceeded = spokenWords.length >= WORDS_LIMIT;
+
+  useEffect(() => {
+    if (!pronunciationСheck) {
+      setReshuffledWords([]);
+    } else {
+      if (reshuffledWords.length === 0 && pronunciationWords[languageParam]) {
+        const newReshuffledWords = reshuffle(pronunciationWords[languageParam]).slice(
+          0,
+          WORDS_LIMIT,
+        ) as string[];
+        setReshuffledWords(newReshuffledWords as string[]);
+      }
+    }
+  }, [languageParam, pronunciationСheck, reshuffledWords.length]);
 
   useEffect(() => {
     if (limitExceeded) {
@@ -100,6 +118,16 @@ export function Speach() {
               <div className={styles.grey}>{`${(word.confidence * 100).toFixed(2)}%`}</div>
             </div>
           ))}
+          {workingStatus === 'on' && pronunciationСheck && reshuffledWords[spokenWords.length] && (
+            <div className={styles.wordContainer}>
+              <div className={classNames(styles.index, styles.grey)}>{`${
+                spokenWords.length + 1
+              }.`}</div>
+              <div className={styles.black}>
+                {reshuffledWords[spokenWords.length].toUpperCase()}
+              </div>
+            </div>
+          )}
           {spokenWords.length > 0 && (
             <div className={classNames(styles.wordContainer)}>
               <div className={styles.grow} />
