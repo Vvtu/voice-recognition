@@ -4,7 +4,13 @@ import { useSearchParams } from 'react-router-dom';
 
 import classNames from 'classnames';
 
-import { LANGUAGE_PARAM, ILanguageParam, WORDS_LIMIT, PRONUNCIATION_СHECK } from '@/app-constants';
+import {
+  ILanguageParam,
+  LANGUAGE_PARAM,
+  WORDS_LIMIT,
+  PRONUNCIATION_СHECK,
+  ROBOT_VOICE_PARAM,
+} from '@/app-constants';
 import panelStyles from '@/pages/panel.module.css';
 import { SettingsPanel } from '@/pages/settings-panel/settings-panel';
 import { pronunciationWords } from '@/pronunciation-words/pronunciation-words';
@@ -21,6 +27,7 @@ export function Speach() {
   const languageParam = (searchParams.get(LANGUAGE_PARAM) ??
     ILanguageParam.russian) as ILanguageParam;
   const pronunciationСheck = searchParams.get(PRONUNCIATION_СHECK) ?? false;
+  const robotVoiceParam = searchParams.get(ROBOT_VOICE_PARAM) ?? '-1';
 
   const [workingStatus, setWorkingStatus] = useState<'on' | 'off'>('off');
   const [spokenWords, setSpokenWords] = useState<SpeechRecognitionAlternative[]>([]);
@@ -32,6 +39,13 @@ export function Speach() {
   console.log('[31m spokenWords = ', spokenWords); //TODO - delete vvtu
   console.log('[33m reshuffledWords = ', reshuffledWords); //TODO - delete vvtu
   console.log('[33m voices = ', voices); //TODO - delete vvtu
+
+  useEffect(() => {
+    if (robotVoiceParam === robotVoiceParam) {
+      setWorkingStatus('off');
+      setSpokenWords([]);
+    }
+  }, [robotVoiceParam]);
 
   useEffect(() => {
     if (!pronunciationСheck) {
@@ -71,13 +85,15 @@ export function Speach() {
         }));
       const lastWord = spokenWordsArr[spokenWordsArr.length - 1];
       setSpokenWords((arr) => [...arr, lastWord]);
-      recognition.stop();
-      voices[0] &&
-        handleTextToSpeach(lastWord.transcript, voices[0]).then(() => recognition.start());
+      if (robotVoiceParam !== '-1') {
+        recognition.stop();
+        voices[0] &&
+          handleTextToSpeach(lastWord.transcript, voices[0]).then(() => recognition.start());
+      }
     });
 
     recognitionRef.current = recognition;
-  }, [languageParam, voices]);
+  }, [languageParam, robotVoiceParam, voices]);
 
   useEffect(() => {
     if (workingStatus === 'on') {
