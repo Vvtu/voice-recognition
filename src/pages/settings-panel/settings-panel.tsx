@@ -2,34 +2,36 @@ import { useSearchParams } from 'react-router-dom';
 
 import classNames from 'classnames';
 
-import { TRANSFER_PARAM } from '@/app-constants';
+import { ROBOT_VOICE_PARAM } from '@/app-constants';
 import panelStyles from '@/pages/panel.module.css';
 import { getNewSearcParams } from '@/utils/get-new-searc-params';
 
 import checkIconChecked from './check-icon-checked.svg';
 import checkIconEmpty from './check-icon-empty.svg';
-import styles from './transfer-filter.module.css';
+import radioButtonUnchecked from './radio-button-unchecked.svg';
+import radioButton from './radio-button.svg';
+import styles from './settings-panel.module.css';
 
 const ITEMS = [
-  { value: -1, label: 'Все' },
+  { value: -1, label: 'Без звука' },
   { value: 0, label: 'Бес пересадок' },
   { value: 1, label: '1 пересадка' },
   { value: 2, label: '2 пересадки' },
   { value: 3, label: '3 пересадки' },
 ];
 
-export function TransferFilter() {
+export function SettingsPanel() {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const transferParam000 = parseInt(searchParams.get(TRANSFER_PARAM) ?? '', 10);
+  const transferParam000 = parseInt(searchParams.get(ROBOT_VOICE_PARAM) ?? '', 10);
   const transferParam = isNaN(transferParam000) ? -1 : transferParam000;
 
   function handleItemClicked(value: number) {
     const newParams = getNewSearcParams(searchParams);
     if (value === -1) {
-      delete newParams[TRANSFER_PARAM];
+      delete newParams[ROBOT_VOICE_PARAM];
     } else {
-      newParams[TRANSFER_PARAM] = value.toFixed(0);
+      newParams[ROBOT_VOICE_PARAM] = value.toFixed(0);
     }
 
     setSearchParams(newParams);
@@ -37,14 +39,22 @@ export function TransferFilter() {
 
   return (
     <div className={classNames(styles.layout, panelStyles.panelColorAndBorder)}>
-      <div className={styles.header}>Количество пересадок</div>
+      <div className={styles.header}>Настройки</div>
+
+      {/* {transferParam === value ? (
+              <img src={checkIconChecked} alt="icon checked" width="40px" height="40px" />
+            ) : (
+              <img src={checkIconEmpty} alt="icon checked" width="40px" height="40px" />
+            )}
+             */}
+      <div className={styles.devider} />
       {ITEMS.map(({ value, label }) => (
         <div key={label} className={styles.itemContainer} onClick={() => handleItemClicked(value)}>
           <div className={styles.itemSubcontainer}>
             {transferParam === value ? (
-              <img src={checkIconChecked} alt="icon checked" width="20px" height="20px" />
+              <img src={radioButton} alt="icon checked" width="40px" height="40px" />
             ) : (
-              <img src={checkIconEmpty} alt="icon checked" width="20px" height="20px" />
+              <img src={radioButtonUnchecked} alt="icon checked" width="40px" height="40px" />
             )}
             <div className={styles.itemText}>{label}</div>
           </div>

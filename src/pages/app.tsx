@@ -2,7 +2,6 @@ import { Speach } from '@/pages/speach/speach';
 
 import styles from './app.module.css';
 import { LanguageTabs } from './language-tabs';
-
 export function App() {
   return (
     <>

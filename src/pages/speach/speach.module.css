@@ -1,3 +1,10 @@
+.layout {
+  margin: 20px 20px;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  gap: 20px;
+}
 .centerContainer {
   margin-top: 40px;
   width: 100%;
@@ -88,6 +95,6 @@
   border-top: solid 5px #aaa;
 }
 
-.margin20 {
-  margin: 20px;
+.flexGrow {
+  flex-grow: 2;
 }
