@@ -8,6 +8,8 @@ import { LANGUAGE_PARAM, ILanguageParam, WORDS_LIMIT, PRONUNCIATION_СHECK } fro
 import panelStyles from '@/pages/panel.module.css';
 import { SettingsPanel } from '@/pages/settings-panel/settings-panel';
 import { pronunciationWords } from '@/pronunciation-words/pronunciation-words';
+import { getVoicesArray } from '@/utils/get-voices-array';
+import { handleTextToSpeach } from '@/utils/handle-text-to-speach';
 import { reshuffle } from '@/utils/reshuffle';
 
 import micIcon from './mic.svg';
@@ -23,11 +25,13 @@ export function Speach() {
   const [workingStatus, setWorkingStatus] = useState<'on' | 'off'>('off');
   const [spokenWords, setSpokenWords] = useState<SpeechRecognitionAlternative[]>([]);
   const [reshuffledWords, setReshuffledWords] = useState<string[]>([]);
+  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const recognitionRef = useRef<SpeechRecognition | undefined>();
   const limitExceeded = spokenWords.length >= WORDS_LIMIT;
 
   console.log('[31m spokenWords = ', spokenWords); //TODO - delete vvtu
   console.log('[33m reshuffledWords = ', reshuffledWords); //TODO - delete vvtu
+  console.log('[33m voices = ', voices); //TODO - delete vvtu
 
   useEffect(() => {
     if (!pronunciationСheck) {
@@ -57,6 +61,7 @@ export function Speach() {
     recognition.interimResults = false;
     recognition.maxAlternatives = 2;
     recognition.addEventListener('result', (e) => {
+      e.stopPropagation();
       console.log('[33m e.results = ', e.results); //TODO - delete vvtu
       const spokenWordsArr = Array.from(e.results)
         .map((result1) => result1[0])
@@ -64,11 +69,15 @@ export function Speach() {
           transcript: result.transcript.toUpperCase().trim(),
           confidence: result.confidence,
         }));
-      setSpokenWords(spokenWordsArr);
+      const lastWord = spokenWordsArr[spokenWordsArr.length - 1];
+      setSpokenWords((arr) => [...arr, lastWord]);
+      recognition.stop();
+      setTimeout(() => recognition.start(), 3000);
+      voices[0] && handleTextToSpeach(lastWord.transcript, voices[0]);
     });
 
     recognitionRef.current = recognition;
-  }, [languageParam]);
+  }, [languageParam, voices]);
 
   useEffect(() => {
     if (workingStatus === 'on') {
@@ -82,6 +91,12 @@ export function Speach() {
       recognitionRef.current?.stop();
     }
   }, [workingStatus]);
+
+  useEffect(() => {
+    getVoicesArray(languageParam).then((vcs) => {
+      setVoices(vcs);
+    });
+  }, [languageParam]);
 
   let averageConfidence = 0;
   for (let index = 0; index < spokenWords.length; index++) {
