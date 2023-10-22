@@ -123,9 +123,7 @@ export function Speach() {
               <div className={classNames(styles.index, styles.grey)}>{`${
                 spokenWords.length + 1
               }.`}</div>
-              <div className={styles.black}>
-                {reshuffledWords[spokenWords.length].toUpperCase()}
-              </div>
+              <div className={styles.grey}>{reshuffledWords[spokenWords.length].toUpperCase()}</div>
             </div>
           )}
           {spokenWords.length > 0 && (
