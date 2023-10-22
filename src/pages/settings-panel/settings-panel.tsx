@@ -2,7 +2,7 @@ import { useSearchParams } from 'react-router-dom';
 
 import classNames from 'classnames';
 
-import { ROBOT_VOICE_PARAM } from '@/app-constants';
+import { ROBOT_VOICE_PARAM, WITH_ROBOT_VOICE } from '@/app-constants';
 import panelStyles from '@/pages/panel.module.css';
 import { getNewSearcParams } from '@/utils/get-new-searc-params';
 
@@ -23,8 +23,10 @@ const ITEMS = [
 export function SettingsPanel() {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const transferParam000 = parseInt(searchParams.get(ROBOT_VOICE_PARAM) ?? '', 10);
-  const transferParam = isNaN(transferParam000) ? -1 : transferParam000;
+  const robotVoiceParam000 = parseInt(searchParams.get(ROBOT_VOICE_PARAM) ?? '', 10);
+  const robotVoiceParam = isNaN(robotVoiceParam000) ? -1 : robotVoiceParam000;
+
+  const withRobotVoice = searchParams.get(WITH_ROBOT_VOICE) ?? false;
 
   function handleItemClicked(value: number) {
     const newParams = getNewSearcParams(searchParams);
@@ -41,17 +43,27 @@ export function SettingsPanel() {
     <div className={classNames(styles.layout, panelStyles.panelColorAndBorder)}>
       <div className={styles.header}>Настройки</div>
 
-      {/* {transferParam === value ? (
-              <img src={checkIconChecked} alt="icon checked" width="40px" height="40px" />
-            ) : (
-              <img src={checkIconEmpty} alt="icon checked" width="40px" height="40px" />
-            )}
-             */}
+      {withRobotVoice ? (
+        <div className={styles.itemContainer} onClick={() => {}}>
+          <div className={styles.itemSubcontainer}>
+            <img src={checkIconChecked} alt="icon checked" width="40px" height="40px" />
+            <div className={styles.itemText}>{'Со звуком'}</div>
+          </div>
+        </div>
+      ) : (
+        <div className={styles.itemContainer} onClick={() => {}}>
+          <div className={styles.itemSubcontainer}>
+            <img src={checkIconEmpty} alt="icon checked" width="40px" height="40px" />
+            <div className={styles.itemText}>{'Со звуком'}</div>
+          </div>
+        </div>
+      )}
+
       <div className={styles.devider} />
       {ITEMS.map(({ value, label }) => (
         <div key={label} className={styles.itemContainer} onClick={() => handleItemClicked(value)}>
           <div className={styles.itemSubcontainer}>
-            {transferParam === value ? (
+            {robotVoiceParam === value ? (
               <img src={radioButton} alt="icon checked" width="40px" height="40px" />
             ) : (
               <img src={radioButtonUnchecked} alt="icon checked" width="40px" height="40px" />
