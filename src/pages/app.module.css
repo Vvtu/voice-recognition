@@ -1,6 +1,7 @@
 .appContainer {
   width: 960px;
-  min-height: calc(100vh - 100px);
+  min-height: calc(100vh - 20px);
+  border-radius: 15px;
 
   margin: 0 auto;
   padding: 0px;
