@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
 
@@ -35,6 +35,7 @@ export function Speach() {
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const recognitionRef = useRef<SpeechRecognition | undefined>();
   const limitExceeded = spokenWords.length >= WORDS_LIMIT;
+  console.log('[33m limitExceeded = ', limitExceeded); //TODO - delete vvtu
 
   console.log('[31m spokenWords = ', spokenWords); //TODO - delete vvtu
   console.log('[33m reshuffledWords = ', reshuffledWords); //TODO - delete vvtu
@@ -65,7 +66,7 @@ export function Speach() {
     if (limitExceeded) {
       setWorkingStatus('off');
     }
-  }, [limitExceeded, workingStatus]);
+  }, [limitExceeded]);
 
   useEffect(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -74,26 +75,38 @@ export function Speach() {
     recognition.lang = languageParam;
     recognition.interimResults = false;
     recognition.maxAlternatives = 2;
-    recognition.addEventListener('result', (e) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    function addEventListenerHandler(e) {
       e.stopPropagation();
       console.log('[33m e.results = ', e.results); //TODO - delete vvtu
       const spokenWordsArr = Array.from(e.results)
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore
         .map((result1) => result1[0])
         .map((result) => ({
           transcript: result.transcript.toUpperCase().trim(),
           confidence: result.confidence,
         }));
-      const lastWord = spokenWordsArr[spokenWordsArr.length - 1];
       setSpokenWords((arr) => [...arr, lastWord]);
+
+      const lastWord = spokenWordsArr[spokenWordsArr.length - 1];
+
       if (robotVoiceParam !== '-1') {
         recognition.stop();
         voices[0] &&
-          handleTextToSpeach(lastWord.transcript, voices[0]).then(() => recognition.start());
+          handleTextToSpeach(lastWord.transcript, voices[0]).then(() => {
+            if (!limitExceeded) {
+              recognition.start();
+            }
+          });
       }
-    });
-
+    }
+    recognition.addEventListener('result', addEventListenerHandler);
     recognitionRef.current = recognition;
-  }, [languageParam, robotVoiceParam, voices]);
+
+    return () => recognition.removeEventListener('result', addEventListenerHandler);
+  }, [languageParam, limitExceeded, robotVoiceParam, voices]);
 
   useEffect(() => {
     if (workingStatus === 'on') {

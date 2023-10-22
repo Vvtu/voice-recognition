@@ -15,9 +15,10 @@ export const handleTextToSpeach = (text: string, voice: SpeechSynthesisVoice) =>
 
       const appcodeIsSpeakingTimeOut = setTimeout(() => {
         resolve(true); // in case of utterThis.onend failed
-      }, 3000);
+      }, 4000);
 
       utterThis.onend = () => {
+        console.log('[36m onend = '); //TODO - delete vvtu
         clearTimeout(appcodeIsSpeakingTimeOut);
         resolve(true);
       };
