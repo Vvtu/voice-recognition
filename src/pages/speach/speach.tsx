@@ -72,8 +72,8 @@ export function Speach() {
       const lastWord = spokenWordsArr[spokenWordsArr.length - 1];
       setSpokenWords((arr) => [...arr, lastWord]);
       recognition.stop();
-      setTimeout(() => recognition.start(), 3000);
-      voices[0] && handleTextToSpeach(lastWord.transcript, voices[0]);
+      voices[0] &&
+        handleTextToSpeach(lastWord.transcript, voices[0]).then(() => recognition.start());
     });
 
     recognitionRef.current = recognition;
