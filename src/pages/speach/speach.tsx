@@ -24,8 +24,10 @@ export function Speach() {
   const [spokenWords, setSpokenWords] = useState<SpeechRecognitionAlternative[]>([]);
   const [reshuffledWords, setReshuffledWords] = useState<string[]>([]);
   const recognitionRef = useRef<SpeechRecognition | undefined>();
-  console.log('[33m reshuffledWords = ', reshuffledWords); //TODO - delete vvtu
   const limitExceeded = spokenWords.length >= WORDS_LIMIT;
+
+  console.log('[31m spokenWords = ', spokenWords); //TODO - delete vvtu
+  console.log('[33m reshuffledWords = ', reshuffledWords); //TODO - delete vvtu
 
   useEffect(() => {
     if (!pronunciationСheck) {
@@ -59,10 +61,9 @@ export function Speach() {
       const spokenWordsArr = Array.from(e.results)
         .map((result1) => result1[0])
         .map((result) => ({
-          transcript: result.transcript.toUpperCase(),
+          transcript: result.transcript.toUpperCase().trim(),
           confidence: result.confidence,
         }));
-      console.log('[33m spokenWordsArr = ', spokenWordsArr); //TODO - delete vvtu
       setSpokenWords(spokenWordsArr);
     });
 
@@ -82,9 +83,17 @@ export function Speach() {
     }
   }, [workingStatus]);
 
-  const averageConfidence =
-    spokenWords.reduce((accumulator, currentValue) => accumulator + currentValue.confidence, 0) /
-    spokenWords.length;
+  let averageConfidence = 0;
+  for (let index = 0; index < spokenWords.length; index++) {
+    averageConfidence +=
+      spokenWords[index].confidence *
+      (pronunciationСheck
+        ? reshuffledWords[index] === spokenWords[index]?.transcript
+          ? 1
+          : 0
+        : 1);
+  }
+  averageConfidence /= spokenWords.length;
 
   return (
     <>
