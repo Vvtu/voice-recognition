@@ -119,7 +119,7 @@ export function Speach() {
             </div>
           ))}
           {workingStatus === 'on' && pronunciationСheck && reshuffledWords[spokenWords.length] && (
-            <div className={styles.wordContainer}>
+            <div className={classNames(styles.wordContainer, styles.micButtonContaineerOn)}>
               <div className={classNames(styles.index, styles.grey)}>{`${
                 spokenWords.length + 1
               }.`}</div>
