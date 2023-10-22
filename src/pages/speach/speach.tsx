@@ -58,7 +58,10 @@ export function Speach() {
       console.log('[33m e.results = ', e.results); //TODO - delete vvtu
       const spokenWordsArr = Array.from(e.results)
         .map((result1) => result1[0])
-        .map((result) => result);
+        .map((result) => ({
+          transcript: result.transcript.toUpperCase(),
+          confidence: result.confidence,
+        }));
       console.log('[33m spokenWordsArr = ', spokenWordsArr); //TODO - delete vvtu
       setSpokenWords(spokenWordsArr);
     });
@@ -113,9 +116,17 @@ export function Speach() {
           {spokenWords.map((word, index) => (
             <div className={styles.wordContainer} key={`${word}-${index}`}>
               <div className={classNames(styles.index, styles.grey)}>{`${index + 1}.`}</div>
-              <div className={styles.black}>{word.transcript.toUpperCase()}</div>
+              <div className={styles.black}>{word.transcript}</div>
               <div className={styles.grow} />
-              <div className={styles.grey}>{`${(word.confidence * 100).toFixed(2)}%`}</div>
+              <div className={styles.grey}>{`${(
+                word.confidence *
+                100 *
+                (pronunciationСheck
+                  ? reshuffledWords[index] === spokenWords[index]?.transcript
+                    ? 1
+                    : 0
+                  : 1)
+              ).toFixed(2)}%`}</div>
             </div>
           ))}
           {workingStatus === 'on' && pronunciationСheck && reshuffledWords[spokenWords.length] && (
@@ -123,7 +134,7 @@ export function Speach() {
               <div className={classNames(styles.index, styles.grey)}>{`${
                 spokenWords.length + 1
               }.`}</div>
-              <div className={styles.grey}>{reshuffledWords[spokenWords.length].toUpperCase()}</div>
+              <div className={styles.grey}>{reshuffledWords[spokenWords.length]}</div>
             </div>
           )}
           {spokenWords.length > 0 && (
