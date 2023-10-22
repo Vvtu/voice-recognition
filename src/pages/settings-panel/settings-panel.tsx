@@ -38,20 +38,30 @@ export function SettingsPanel() {
 
     setSearchParams(newParams);
   }
+  function handleWithRobotVoiceClicked(value: boolean) {
+    const newParams = getNewSearcParams(searchParams);
+    if (!value) {
+      delete newParams[WITH_ROBOT_VOICE];
+    } else {
+      newParams[WITH_ROBOT_VOICE] = true;
+    }
+
+    setSearchParams(newParams);
+  }
 
   return (
     <div className={classNames(styles.layout, panelStyles.panelColorAndBorder)}>
       <div className={styles.header}>Настройки</div>
 
       {withRobotVoice ? (
-        <div className={styles.itemContainer} onClick={() => {}}>
+        <div className={styles.itemContainer} onClick={() => handleWithRobotVoiceClicked(false)}>
           <div className={styles.itemSubcontainer}>
             <img src={checkIconChecked} alt="icon checked" width="40px" height="40px" />
             <div className={styles.itemText}>{'Со звуком'}</div>
           </div>
         </div>
       ) : (
-        <div className={styles.itemContainer} onClick={() => {}}>
+        <div className={styles.itemContainer} onClick={() => handleWithRobotVoiceClicked(true)}>
           <div className={styles.itemSubcontainer}>
             <img src={checkIconEmpty} alt="icon checked" width="40px" height="40px" />
             <div className={styles.itemText}>{'Со звуком'}</div>
