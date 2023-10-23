@@ -27,7 +27,9 @@ export function Speach() {
   const languageParam = (searchParams.get(LANGUAGE_PARAM) ??
     ILanguageParam.russian) as ILanguageParam;
   const pronunciationСheck = searchParams.get(PRONUNCIATION_СHECK) ?? false;
-  const robotVoiceParam = searchParams.get(ROBOT_VOICE_PARAM) ?? '-1';
+
+  const robotVoiceParam000 = parseInt(searchParams.get(ROBOT_VOICE_PARAM) ?? '', 10);
+  const robotVoiceParam = isNaN(robotVoiceParam000) ? -1 : robotVoiceParam000;
 
   const [workingStatus, setWorkingStatus] = useState<'on' | 'off'>('off');
   const [spokenWords, setSpokenWords] = useState<SpeechRecognitionAlternative[]>([]);
@@ -35,18 +37,16 @@ export function Speach() {
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const recognitionRef = useRef<SpeechRecognition | undefined>();
   const limitExceeded = spokenWords.length >= WORDS_LIMIT;
-  console.log('[33m limitExceeded = ', limitExceeded); //TODO - delete vvtu
 
   console.log('[31m spokenWords = ', spokenWords); //TODO - delete vvtu
   console.log('[33m reshuffledWords = ', reshuffledWords); //TODO - delete vvtu
-  console.log('[33m voices = ', voices); //TODO - delete vvtu
 
   useEffect(() => {
-    if (robotVoiceParam === robotVoiceParam) {
+    if (robotVoiceParam === robotVoiceParam || languageParam === languageParam) {
       setWorkingStatus('off');
       setSpokenWords([]);
     }
-  }, [robotVoiceParam]);
+  }, [robotVoiceParam, languageParam]);
 
   useEffect(() => {
     if (!pronunciationСheck) {
@@ -92,10 +92,12 @@ export function Speach() {
 
       const lastWord = spokenWordsArr[spokenWordsArr.length - 1];
 
-      if (robotVoiceParam !== '-1') {
+      if (robotVoiceParam !== -1) {
         recognition.stop();
-        voices[0] &&
-          handleTextToSpeach(lastWord.transcript, voices[0]).then(() => {
+        const voice = voices[robotVoiceParam] ?? voices[0];
+
+        voice &&
+          handleTextToSpeach(lastWord.transcript, voice).then(() => {
             if (!limitExceeded) {
               recognition.start();
             }
@@ -164,7 +166,7 @@ export function Speach() {
       </div>
       <br />
       <div className={styles.layout}>
-        <SettingsPanel />
+        <SettingsPanel voices={voices} />
         <div className={classNames(panelStyles.panelColorAndBorder, styles.flexGrow)}>
           {spokenWords.map((word, index) => {
             const match =
