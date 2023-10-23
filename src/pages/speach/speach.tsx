@@ -49,18 +49,22 @@ export function Speach() {
   }, [robotVoiceParam, languageParam]);
 
   useEffect(() => {
-    if (!pronunciationСheck) {
-      setReshuffledWords([]);
-    } else {
-      if (reshuffledWords.length === 0 && pronunciationWords[languageParam]) {
-        const newReshuffledWords = reshuffle(pronunciationWords[languageParam]).slice(
+    if (
+      robotVoiceParam === robotVoiceParam ||
+      languageParam === languageParam ||
+      workingStatus === workingStatus
+    ) {
+      if (!pronunciationСheck) {
+        setReshuffledWords([]);
+      } else {
+        const newReshuffledWords = reshuffle(pronunciationWords[languageParam] ?? []).slice(
           0,
           WORDS_LIMIT,
         ) as string[];
         setReshuffledWords(newReshuffledWords as string[]);
       }
     }
-  }, [languageParam, pronunciationСheck, reshuffledWords.length]);
+  }, [languageParam, pronunciationСheck, robotVoiceParam, workingStatus]);
 
   useEffect(() => {
     if (limitExceeded) {
