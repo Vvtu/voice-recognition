@@ -1,15 +1,48 @@
 module.exports = {
-  root: true,
-  env: { browser: true, es2020: true },
+  env: {
+    browser: true,
+    es2021: true,
+  },
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:react-hooks/recommended',
+    'plugin:react/recommended',
+    'plugin:prettier/recommended',
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
+  overrides: [
+    {
+      env: {
+        node: true,
+      },
+      files: ['.eslintrc.{js,cjs}'],
+      parserOptions: {
+        sourceType: 'script',
+      },
+    },
+  ],
   parser: '@typescript-eslint/parser',
-  plugins: ['react-refresh', 'import', 'filename-rules'],
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+  },
+  plugins: [
+    '@typescript-eslint',
+    'react',
+    'react-refresh',
+    'react-hooks',
+    'import',
+    'filename-rules',
+  ],
   rules: {
+    'react/react-in-jsx-scope': 'off',
+    'react/no-unescaped-entities': 'off',
+    'prettier/prettier': [
+      'warn',
+      {
+        endOfLine: 'auto',
+      },
+    ],
     'filename-rules/match': ['error', /^([a-z,0-9]+-)*[a-z,0-9]+(?:\..*)?$/],
     'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     'no-shadow': ['error', { builtinGlobals: true }],
