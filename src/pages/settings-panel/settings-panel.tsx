@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import { useSearchParams } from 'react-router-dom';
 
 import classNames from 'classnames';
@@ -12,15 +14,7 @@ import radioButtonUnchecked from './radio-button-unchecked.svg';
 import radioButton from './radio-button.svg';
 import styles from './settings-panel.module.css';
 
-const ITEMS = [
-  { value: -1, label: 'Без звука' },
-  { value: 0, label: 'Бес пересадок' },
-  { value: 1, label: '1 пересадка' },
-  { value: 2, label: '2 пересадки' },
-  { value: 3, label: '3 пересадки' },
-];
-
-export function SettingsPanel() {
+export function SettingsPanel({ voices }: { voices: SpeechSynthesisVoice[] }) {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const robotVoiceParam000 = parseInt(searchParams.get(ROBOT_VOICE_PARAM) ?? '', 10);
@@ -48,6 +42,20 @@ export function SettingsPanel() {
 
     setSearchParams(newParams);
   }
+  const voiceOptions = useMemo(() => {
+    console.log('[33m voices = ', voices); //TODO - delete vvtu
+
+    const result = voices.slice(0, 5).map((voice, index) => {
+      const arr = voice.name.split(' ');
+      const label = arr[0];
+
+      return { value: index, label };
+    });
+
+    result.unshift({ value: -1, label: 'Без звука' });
+
+    return result;
+  }, [voices]);
 
   return (
     <div className={classNames(styles.layout, panelStyles.panelColorAndBorder)}>
@@ -73,7 +81,7 @@ export function SettingsPanel() {
       )}
 
       <div className={styles.devider} />
-      {ITEMS.map(({ value, label }) => (
+      {voiceOptions.map(({ value, label }) => (
         <div key={label} className={styles.itemContainer} onClick={() => handleItemClicked(value)}>
           <div className={styles.itemSubcontainer}>
             {robotVoiceParam === value ? (

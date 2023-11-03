@@ -27,7 +27,9 @@ export function Speach() {
   const languageParam = (searchParams.get(LANGUAGE_PARAM) ??
     ILanguageParam.russian) as ILanguageParam;
   const pronunciationСheck = searchParams.get(PRONUNCIATION_СHECK) ?? false;
-  const robotVoiceParam = searchParams.get(ROBOT_VOICE_PARAM) ?? '-1';
+
+  const robotVoiceParam000 = parseInt(searchParams.get(ROBOT_VOICE_PARAM) ?? '', 10);
+  const robotVoiceParam = isNaN(robotVoiceParam000) ? -1 : robotVoiceParam000;
 
   const [workingStatus, setWorkingStatus] = useState<'on' | 'off'>('off');
   const [spokenWords, setSpokenWords] = useState<SpeechRecognitionAlternative[]>([]);
@@ -38,34 +40,23 @@ export function Speach() {
 
   console.log('[31m spokenWords = ', spokenWords); //TODO - delete vvtu
   console.log('[33m reshuffledWords = ', reshuffledWords); //TODO - delete vvtu
-  console.log('[33m voices = ', voices); //TODO - delete vvtu
 
   useEffect(() => {
-    if (robotVoiceParam === robotVoiceParam) {
+    if (
+      robotVoiceParam === robotVoiceParam ||
+      languageParam === languageParam ||
+      pronunciationСheck === pronunciationСheck
+    ) {
       setWorkingStatus('off');
       setSpokenWords([]);
     }
-  }, [robotVoiceParam]);
-
-  useEffect(() => {
-    if (!pronunciationСheck) {
-      setReshuffledWords([]);
-    } else {
-      if (reshuffledWords.length === 0 && pronunciationWords[languageParam]) {
-        const newReshuffledWords = reshuffle(pronunciationWords[languageParam]).slice(
-          0,
-          WORDS_LIMIT,
-        ) as string[];
-        setReshuffledWords(newReshuffledWords as string[]);
-      }
-    }
-  }, [languageParam, pronunciationСheck, reshuffledWords.length]);
+  }, [robotVoiceParam, languageParam, pronunciationСheck]);
 
   useEffect(() => {
     if (limitExceeded) {
       setWorkingStatus('off');
     }
-  }, [limitExceeded, workingStatus]);
+  }, [limitExceeded]);
 
   useEffect(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -74,26 +65,40 @@ export function Speach() {
     recognition.lang = languageParam;
     recognition.interimResults = false;
     recognition.maxAlternatives = 2;
-    recognition.addEventListener('result', (e) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    function addEventListenerHandler(e) {
       e.stopPropagation();
       console.log('[33m e.results = ', e.results); //TODO - delete vvtu
       const spokenWordsArr = Array.from(e.results)
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore
         .map((result1) => result1[0])
         .map((result) => ({
           transcript: result.transcript.toUpperCase().trim(),
           confidence: result.confidence,
         }));
-      const lastWord = spokenWordsArr[spokenWordsArr.length - 1];
       setSpokenWords((arr) => [...arr, lastWord]);
-      if (robotVoiceParam !== '-1') {
-        recognition.stop();
-        voices[0] &&
-          handleTextToSpeach(lastWord.transcript, voices[0]).then(() => recognition.start());
-      }
-    });
 
+      const lastWord = spokenWordsArr[spokenWordsArr.length - 1];
+
+      if (robotVoiceParam !== -1) {
+        recognition.stop();
+        const voice = voices[robotVoiceParam] ?? voices[0];
+
+        voice &&
+          handleTextToSpeach(lastWord.transcript, voice).then(() => {
+            if (!limitExceeded) {
+              recognition.start();
+            }
+          });
+      }
+    }
+    recognition.addEventListener('result', addEventListenerHandler);
     recognitionRef.current = recognition;
-  }, [languageParam, robotVoiceParam, voices]);
+
+    return () => recognition.removeEventListener('result', addEventListenerHandler);
+  }, [languageParam, limitExceeded, robotVoiceParam, voices]);
 
   useEffect(() => {
     if (workingStatus === 'on') {
@@ -138,6 +143,14 @@ export function Speach() {
             if (workingStatus === 'off') {
               setWorkingStatus('on');
               setSpokenWords([]);
+              setReshuffledWords(
+                pronunciationСheck
+                  ? (reshuffle(pronunciationWords[languageParam] ?? []).slice(
+                      0,
+                      WORDS_LIMIT,
+                    ) as string[])
+                  : [],
+              );
             } else {
               setWorkingStatus('off');
             }
@@ -151,7 +164,7 @@ export function Speach() {
       </div>
       <br />
       <div className={styles.layout}>
-        <SettingsPanel />
+        <SettingsPanel voices={voices} />
         <div className={classNames(panelStyles.panelColorAndBorder, styles.flexGrow)}>
           {spokenWords.map((word, index) => {
             const match =
@@ -160,7 +173,9 @@ export function Speach() {
             return (
               <div className={styles.wordContainer} key={`${word}-${index}`}>
                 <div className={classNames(styles.index, styles.grey)}>{`${index + 1}.`}</div>
-                {!match && <div className={styles.grey}>{`(${reshuffledWords[index]})\u00A0`}</div>}
+                {!match && reshuffledWords[index] && (
+                  <div className={styles.grey}>{`(${reshuffledWords[index]})\u00A0`}</div>
+                )}
                 <div className={match ? styles.black : styles.red}>{word.transcript}</div>
                 <div className={styles.grow} />
                 <div className={styles.grey}>{`${(word.confidence * (match ? 100 : 0)).toFixed(

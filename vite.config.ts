@@ -5,6 +5,7 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   plugins: [react()],
+  base: 'https://vvtu.github.io/voice-recognition-build/',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
