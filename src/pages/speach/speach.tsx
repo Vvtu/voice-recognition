@@ -42,29 +42,15 @@ export function Speach() {
   console.log('[33m reshuffledWords = ', reshuffledWords); //TODO - delete vvtu
 
   useEffect(() => {
-    if (robotVoiceParam === robotVoiceParam || languageParam === languageParam) {
-      setWorkingStatus('off');
-      setSpokenWords([]);
-    }
-  }, [robotVoiceParam, languageParam]);
-
-  useEffect(() => {
     if (
       robotVoiceParam === robotVoiceParam ||
       languageParam === languageParam ||
-      workingStatus === workingStatus
+      pronunciationСheck === pronunciationСheck
     ) {
-      if (!pronunciationСheck) {
-        setReshuffledWords([]);
-      } else {
-        const newReshuffledWords = reshuffle(pronunciationWords[languageParam] ?? []).slice(
-          0,
-          WORDS_LIMIT,
-        ) as string[];
-        setReshuffledWords(newReshuffledWords as string[]);
-      }
+      setWorkingStatus('off');
+      setSpokenWords([]);
     }
-  }, [languageParam, pronunciationСheck, robotVoiceParam, workingStatus]);
+  }, [robotVoiceParam, languageParam, pronunciationСheck]);
 
   useEffect(() => {
     if (limitExceeded) {
@@ -157,6 +143,14 @@ export function Speach() {
             if (workingStatus === 'off') {
               setWorkingStatus('on');
               setSpokenWords([]);
+              setReshuffledWords(
+                pronunciationСheck
+                  ? (reshuffle(pronunciationWords[languageParam] ?? []).slice(
+                      0,
+                      WORDS_LIMIT,
+                    ) as string[])
+                  : [],
+              );
             } else {
               setWorkingStatus('off');
             }
@@ -179,7 +173,9 @@ export function Speach() {
             return (
               <div className={styles.wordContainer} key={`${word}-${index}`}>
                 <div className={classNames(styles.index, styles.grey)}>{`${index + 1}.`}</div>
-                {!match && <div className={styles.grey}>{`(${reshuffledWords[index]})\u00A0`}</div>}
+                {!match && reshuffledWords[index] && (
+                  <div className={styles.grey}>{`(${reshuffledWords[index]})\u00A0`}</div>
+                )}
                 <div className={match ? styles.black : styles.red}>{word.transcript}</div>
                 <div className={styles.grow} />
                 <div className={styles.grey}>{`${(word.confidence * (match ? 100 : 0)).toFixed(
