@@ -26,7 +26,7 @@ export function Speach() {
 
   const languageParam = (searchParams.get(LANGUAGE_PARAM) ??
     ILanguageParam.russian) as ILanguageParam;
-  const pronunciationСheck = searchParams.get(PRONUNCIATION_СHECK) ?? false;
+  const pronunciationСheck = (searchParams.get(PRONUNCIATION_СHECK) ?? 'true') === 'true';
 
   const robotVoiceParam000 = parseInt(searchParams.get(ROBOT_VOICE_PARAM) ?? '', 10);
   const robotVoiceParam = isNaN(robotVoiceParam000) ? -1 : robotVoiceParam000;

@@ -23,16 +23,16 @@ export const LANGUAGE_OBJ = {
   [ILanguageParam.french]: 'Французский',
 };
 
-//  lang = 'de-DE';
+//  lang = 'de-DE'; Немецкий
 //  lang = 'en-US';
 //  lang = 'en-US';
 //  lang = 'es-ES';
-//  lang = 'fi-FI';
+//  lang = 'fi-FI'; Финский
 //  lang = 'fr-FR';
-//  lang = 'it-IT';
-//  lang = 'pt-PT';
+//  lang = 'it-IT'; Итальянский
+//  lang = 'pt-PT'; Португальский
 //  lang = 'ru-RU';
-//  lang = 'zh-CN';
+//  lang = 'zh-CN'; Чешский
 
 export const PAGE_SIZE = 5;
 

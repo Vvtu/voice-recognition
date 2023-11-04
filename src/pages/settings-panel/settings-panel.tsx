@@ -20,7 +20,7 @@ export function SettingsPanel({ voices }: { voices: SpeechSynthesisVoice[] }) {
   const robotVoiceParam000 = parseInt(searchParams.get(ROBOT_VOICE_PARAM) ?? '', 10);
   const robotVoiceParam = isNaN(robotVoiceParam000) ? -1 : robotVoiceParam000;
 
-  const pronunciationСheck = searchParams.get(PRONUNCIATION_СHECK) ?? false;
+  const pronunciationСheck = (searchParams.get(PRONUNCIATION_СHECK) ?? 'true') === 'true';
 
   function handleItemClicked(value: number) {
     const newParams = getNewSearcParams(searchParams);
@@ -34,10 +34,10 @@ export function SettingsPanel({ voices }: { voices: SpeechSynthesisVoice[] }) {
   }
   function handlePronunciationСheckClicked(value: boolean) {
     const newParams = getNewSearcParams(searchParams);
-    if (!value) {
+    if (value) {
       delete newParams[PRONUNCIATION_СHECK];
     } else {
-      newParams[PRONUNCIATION_СHECK] = true;
+      newParams[PRONUNCIATION_СHECK] = false;
     }
 
     setSearchParams(newParams);
@@ -68,14 +68,14 @@ export function SettingsPanel({ voices }: { voices: SpeechSynthesisVoice[] }) {
         >
           <div className={styles.itemSubcontainer}>
             <img src={checkIconChecked} alt="icon checked" width="40px" height="40px" />
-            <div className={styles.itemText}>{'Проверка произношения'}</div>
+            <div className={styles.itemText}>{'Предлагать слова'}</div>
           </div>
         </div>
       ) : (
         <div className={styles.itemContainer} onClick={() => handlePronunciationСheckClicked(true)}>
           <div className={styles.itemSubcontainer}>
             <img src={checkIconEmpty} alt="icon checked" width="40px" height="40px" />
-            <div className={styles.itemText}>{'Проверка произношения'}</div>
+            <div className={styles.itemText}>{'Предлагать слова'}</div>
           </div>
         </div>
       )}
