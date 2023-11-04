@@ -31,6 +31,7 @@ export function Speach() {
   const robotVoiceParam000 = parseInt(searchParams.get(ROBOT_VOICE_PARAM) ?? '', 10);
   const robotVoiceParam = isNaN(robotVoiceParam000) ? -1 : robotVoiceParam000;
 
+  const [browserIsSupported, setBrowserIsSupported] = useState<boolean>(true);
   const [workingStatus, setWorkingStatus] = useState<'on' | 'off'>('off');
   const [spokenWords, setSpokenWords] = useState<SpeechRecognitionAlternative[]>([]);
   const [reshuffledWords, setReshuffledWords] = useState<string[]>([]);
@@ -60,7 +61,16 @@ export function Speach() {
 
   useEffect(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    const recognition = new SpeechRecognition();
+    let recognition: SpeechRecognition | undefined;
+
+    try {
+      recognition = new SpeechRecognition();
+    } catch (e) {
+      setBrowserIsSupported(false);
+
+      return;
+    }
+
     recognition.continuous = true;
     recognition.lang = languageParam;
     recognition.interimResults = false;
@@ -83,13 +93,13 @@ export function Speach() {
       const lastWord = spokenWordsArr[spokenWordsArr.length - 1];
 
       if (robotVoiceParam !== -1) {
-        recognition.stop();
+        recognition?.stop();
         const voice = voices[robotVoiceParam] ?? voices[0];
 
         voice &&
           handleTextToSpeach(lastWord.transcript, voice).then(() => {
             if (!limitExceeded) {
-              recognition.start();
+              recognition?.start();
             }
           });
       }
@@ -97,7 +107,7 @@ export function Speach() {
     recognition.addEventListener('result', addEventListenerHandler);
     recognitionRef.current = recognition;
 
-    return () => recognition.removeEventListener('result', addEventListenerHandler);
+    return () => recognition?.removeEventListener('result', addEventListenerHandler);
   }, [languageParam, limitExceeded, robotVoiceParam, voices]);
 
   useEffect(() => {
@@ -130,6 +140,23 @@ export function Speach() {
         : 1);
   }
   averageConfidence /= spokenWords.length;
+
+  console.log('[33m browserIsSupported = ', browserIsSupported); //TODO - delete vvtu
+
+  if (browserIsSupported === false) {
+    return (
+      <div className={styles.centerContainer}>
+        <div className={styles.layout}>
+          <div
+            style={{ padding: 40, fontSize: 32 }}
+            className={classNames(panelStyles.panelColorAndBorder)}
+          >
+            Ваш браузер не поддерживается
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
