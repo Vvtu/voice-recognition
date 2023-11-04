@@ -18,6 +18,7 @@ import { getVoicesArray } from '@/utils/get-voices-array';
 import { handleTextToSpeach } from '@/utils/handle-text-to-speach';
 import { reshuffle } from '@/utils/reshuffle';
 
+import { Figure } from './figure';
 import micIcon from './mic.svg';
 import styles from './speach.module.css';
 
@@ -88,9 +89,8 @@ export function Speach() {
           transcript: result.transcript.toUpperCase().trim(),
           confidence: result.confidence,
         }));
-      setSpokenWords((arr) => [...arr, lastWord]);
-
       const lastWord = spokenWordsArr[spokenWordsArr.length - 1];
+      setSpokenWords((arr) => [...arr, lastWord]);
 
       if (robotVoiceParam !== -1) {
         recognition?.stop();
@@ -234,6 +234,7 @@ export function Speach() {
           )}
         </div>
       </div>
+      <Figure word={spokenWords[spokenWords.length - 1]?.transcript} />
     </>
   );
 }
