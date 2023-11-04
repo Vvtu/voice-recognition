@@ -18,6 +18,7 @@ import { getVoicesArray } from '@/utils/get-voices-array';
 import { handleTextToSpeach } from '@/utils/handle-text-to-speach';
 import { reshuffle } from '@/utils/reshuffle';
 
+import { Figure } from './figure';
 import micIcon from './mic.svg';
 import styles from './speach.module.css';
 
@@ -26,11 +27,12 @@ export function Speach() {
 
   const languageParam = (searchParams.get(LANGUAGE_PARAM) ??
     ILanguageParam.russian) as ILanguageParam;
-  const pronunciationСheck = searchParams.get(PRONUNCIATION_СHECK) ?? false;
+  const pronunciationСheck = (searchParams.get(PRONUNCIATION_СHECK) ?? 'true') === 'true';
 
   const robotVoiceParam000 = parseInt(searchParams.get(ROBOT_VOICE_PARAM) ?? '', 10);
   const robotVoiceParam = isNaN(robotVoiceParam000) ? -1 : robotVoiceParam000;
 
+  const [browserIsSupported, setBrowserIsSupported] = useState<boolean>(true);
   const [workingStatus, setWorkingStatus] = useState<'on' | 'off'>('off');
   const [spokenWords, setSpokenWords] = useState<SpeechRecognitionAlternative[]>([]);
   const [reshuffledWords, setReshuffledWords] = useState<string[]>([]);
@@ -60,7 +62,16 @@ export function Speach() {
 
   useEffect(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    const recognition = new SpeechRecognition();
+    let recognition: SpeechRecognition | undefined;
+
+    try {
+      recognition = new SpeechRecognition();
+    } catch (e) {
+      setBrowserIsSupported(false);
+
+      return;
+    }
+
     recognition.continuous = true;
     recognition.lang = languageParam;
     recognition.interimResults = false;
@@ -78,18 +89,17 @@ export function Speach() {
           transcript: result.transcript.toUpperCase().trim(),
           confidence: result.confidence,
         }));
+      const lastWord = spokenWordsArr[spokenWordsArr.length - 1];
       setSpokenWords((arr) => [...arr, lastWord]);
 
-      const lastWord = spokenWordsArr[spokenWordsArr.length - 1];
-
       if (robotVoiceParam !== -1) {
-        recognition.stop();
+        recognition?.stop();
         const voice = voices[robotVoiceParam] ?? voices[0];
 
         voice &&
           handleTextToSpeach(lastWord.transcript, voice).then(() => {
             if (!limitExceeded) {
-              recognition.start();
+              recognition?.start();
             }
           });
       }
@@ -97,7 +107,7 @@ export function Speach() {
     recognition.addEventListener('result', addEventListenerHandler);
     recognitionRef.current = recognition;
 
-    return () => recognition.removeEventListener('result', addEventListenerHandler);
+    return () => recognition?.removeEventListener('result', addEventListenerHandler);
   }, [languageParam, limitExceeded, robotVoiceParam, voices]);
 
   useEffect(() => {
@@ -130,6 +140,25 @@ export function Speach() {
         : 1);
   }
   averageConfidence /= spokenWords.length;
+
+  console.log('[33m browserIsSupported = ', browserIsSupported); //TODO - delete vvtu
+
+  if (browserIsSupported === false) {
+    return (
+      <div className={styles.centerContainer}>
+        <div className={styles.layout}>
+          <div
+            style={{ padding: 40, fontSize: 32 }}
+            className={classNames(panelStyles.panelColorAndBorder)}
+          >
+            Ваш браузер не поддерживается
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  console.log('[33m spokenWords = ', spokenWords); //TODO - delete vvtu
 
   return (
     <>
@@ -185,7 +214,10 @@ export function Speach() {
             );
           })}
           {workingStatus === 'on' && pronunciationСheck && reshuffledWords[spokenWords.length] && (
-            <div className={classNames(styles.wordContainer, styles.micButtonContaineerOn)}>
+            <div
+              key={reshuffledWords[spokenWords.length]}
+              className={classNames(styles.wordContainer, styles.micButtonContaineerOn)}
+            >
               <div className={classNames(styles.index, styles.grey)}>{`${
                 spokenWords.length + 1
               }.`}</div>
@@ -202,6 +234,7 @@ export function Speach() {
           )}
         </div>
       </div>
+      <Figure word={spokenWords[spokenWords.length - 1]?.transcript} />
     </>
   );
 }

@@ -23,17 +23,78 @@ export const LANGUAGE_OBJ = {
   [ILanguageParam.french]: 'Французский',
 };
 
-//  lang = 'de-DE';
+//  lang = 'de-DE'; Немецкий
 //  lang = 'en-US';
 //  lang = 'en-US';
 //  lang = 'es-ES';
-//  lang = 'fi-FI';
+//  lang = 'fi-FI'; Финский
 //  lang = 'fr-FR';
-//  lang = 'it-IT';
-//  lang = 'pt-PT';
+//  lang = 'it-IT'; Итальянский
+//  lang = 'pt-PT'; Португальский
 //  lang = 'ru-RU';
-//  lang = 'zh-CN';
+//  lang = 'zh-CN'; Чешский
 
 export const PAGE_SIZE = 5;
 
 export const WORDS_LIMIT = 5;
+
+// eslint-disable-next-line no-shadow
+export enum IFigureShape {
+  circle = 1,
+  square,
+  triangle,
+}
+export const FIGURE_MAP = new Map([
+  ['КРУГ', IFigureShape.circle],
+  ['КРУЖОК', IFigureShape.circle],
+  ['CIRCLE', IFigureShape.circle],
+  ['CERCLE', IFigureShape.circle],
+  ['CÍRCULO', IFigureShape.circle],
+  //
+  ['КВАДРАТ', IFigureShape.square],
+  ['SQUARE', IFigureShape.square],
+  ['CARRÉ', IFigureShape.square],
+  ['CUADRADO', IFigureShape.square],
+  //
+  ['ТРЕУГОЛЬНИК', IFigureShape.triangle],
+  ['TRIANGLE', IFigureShape.triangle],
+  ['TRIANGLE', IFigureShape.triangle],
+  ['TRIÁNGULO', IFigureShape.triangle],
+]);
+export const FIGURE_COLOR_MAP = new Map([
+  ['КРАСНЫЙ', 'red'],
+  ['ОРАНЖЕВЫЙ', 'orange'],
+  ['ЖЁЛТЫЙ', 'yellow'],
+  ['ЗЕЛЁНЫЙ', 'green'],
+  ['СИНИЙ', 'blue'],
+  ['ФИОЛЕТОВЫЙ', 'violet'],
+  ['ЧЁРНЫЙ', 'black'],
+  ['БЕЛЫЙ', 'white'],
+  //
+  ['RED', 'red'],
+  ['ORANGE', 'orange'],
+  ['YELLOW', 'yellow'],
+  ['GREEN', 'green'],
+  ['BLUE', 'blue'],
+  ['VIOLET', 'violet'],
+  ['BLACK', 'black'],
+  ['WHITE', 'white'],
+  //
+  ['ROUGE', 'red'],
+  ['ORANGE', 'orange'],
+  ['JAUNE', 'yellow'],
+  ['VERT', 'green'],
+  ['BLEU', 'blue'],
+  ['VIOLET', 'violet'],
+  ['NOIR', 'black'],
+  ['BLANC', 'white'],
+  //
+  ['ROJO', 'red'],
+  ['NARANJA', 'orange'],
+  ['AMARILLO', 'yellow'],
+  ['VERDE', 'green'],
+  ['AZUL', 'blue'],
+  ['VIOLETA', 'violet'],
+  ['NEGRO', 'black'],
+  ['BLANCO', 'white'],
+]);
