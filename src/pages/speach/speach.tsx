@@ -158,6 +158,8 @@ export function Speach() {
     );
   }
 
+  console.log('[33m spokenWords = ', spokenWords); //TODO - delete vvtu
+
   return (
     <>
       <div className={styles.centerContainer}>
@@ -212,7 +214,10 @@ export function Speach() {
             );
           })}
           {workingStatus === 'on' && pronunciationСheck && reshuffledWords[spokenWords.length] && (
-            <div className={classNames(styles.wordContainer, styles.micButtonContaineerOn)}>
+            <div
+              key={reshuffledWords[spokenWords.length]}
+              className={classNames(styles.wordContainer, styles.micButtonContaineerOn)}
+            >
               <div className={classNames(styles.index, styles.grey)}>{`${
                 spokenWords.length + 1
               }.`}</div>
