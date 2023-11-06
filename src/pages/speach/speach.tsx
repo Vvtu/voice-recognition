@@ -190,6 +190,7 @@ export function Speach() {
             {'Микрофон'}
           </div>
         </div>
+        <Figure word={spokenWords[spokenWords.length - 1]?.transcript} />
       </div>
       <br />
       <div className={styles.layout}>
@@ -234,7 +235,6 @@ export function Speach() {
           )}
         </div>
       </div>
-      <Figure word={spokenWords[spokenWords.length - 1]?.transcript} />
     </>
   );
 }
