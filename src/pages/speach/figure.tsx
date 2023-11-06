@@ -1,10 +1,6 @@
 import { useRef } from 'react';
 
-// import classNames from 'classnames';
-
 import { IFigureShape, FIGURE_MAP, FIGURE_COLOR_MAP } from '@/app-constants';
-
-import styles from './speach.module.css';
 
 export function Figure({ word }: { word: string | undefined }) {
   const figureShape = useRef<IFigureShape>(IFigureShape.circle);
@@ -23,7 +19,7 @@ export function Figure({ word }: { word: string | undefined }) {
   }
 
   return (
-    <div className={styles.centerContainer}>
+    <div style={{ marginLeft: 40 }}>
       {figureShape.current === IFigureShape.square && (
         <div style={{ width: '100px', height: '100px', backgroundColor: fugureColor.current }} />
       )}
