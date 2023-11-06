@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 
 import classNames from 'classnames';
 
-import { ROBOT_VOICE_PARAM, PRONUNCIATION_СHECK } from '@/app-constants';
+import { ROBOT_VOICE_PARAM, PRONUNCIATION_СHECK, FORBIDEN_VOICES_SET } from '@/app-constants';
 import panelStyles from '@/pages/panel.module.css';
 import { getNewSearcParams } from '@/utils/get-new-searc-params';
 
@@ -43,19 +43,24 @@ export function SettingsPanel({ voices }: { voices: SpeechSynthesisVoice[] }) {
     setSearchParams(newParams);
   }
   const voiceOptions = useMemo(() => {
-    console.log('[33m voices = ', voices); //TODO - delete vvtu
+    const result = voices
+      .map((item, index) => ({ name: item.name, index }))
+      .filter((item) => !FORBIDEN_VOICES_SET.has(item.name))
+      .slice(0, 5)
+      .map((voice) => {
+        const arr = voice.name.split(' ');
+        const label = arr[0];
 
-    const result = voices.slice(0, 5).map((voice, index) => {
-      const arr = voice.name.split(' ');
-      const label = arr[0];
-
-      return { value: index, label };
-    });
+        return { value: voice.index, label };
+      });
 
     result.unshift({ value: -1, label: 'Без звука' });
 
     return result;
   }, [voices]);
+
+  const objVoices = voices.map((item) => item.voiceURI);
+  console.log('[33m objVoices = ', objVoices); //TODO - delete vvtu
 
   return (
     <div className={classNames(styles.layout, panelStyles.panelColorAndBorder)}>
