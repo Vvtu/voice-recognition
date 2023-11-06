@@ -1,8 +1,8 @@
-import { RouterProvider } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 
 import { QueryClient, QueryClientProvider } from 'react-query';
 
-import { router } from '@/router/router';
+import { MainRoutes } from '@/main-routes/main-routes';
 
 const MAX_STALE_TIME = 3000;
 
@@ -25,7 +25,9 @@ const queryClient = new QueryClient({
 export function Wrappers({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router({ children })} />
+      <BrowserRouter basename="/voice-recognition-build">
+        <MainRoutes>{children}</MainRoutes>
+      </BrowserRouter>
     </QueryClientProvider>
   );
 }
