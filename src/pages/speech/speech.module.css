@@ -22,7 +22,8 @@
 
 .micButtonContainer {
   height: var(--button-height);
-  width: 60px;
+  min-width: 60px;
+  max-width: 60px;
 
   font-size: var(--font-size-22);
   font-style: normal;
