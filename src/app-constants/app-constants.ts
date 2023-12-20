@@ -9,8 +9,6 @@ export const PRONUNCIATION_CHECK = 'pronunciationCheck';
 // eslint-disable-next-line no-shadow
 export enum ILanguageParam {
   russian = 'ru-RU',
-  french = 'fr-FR',
-  spanish = 'es-ES',
   english = 'en-US',
 }
 
@@ -19,8 +17,6 @@ export const LANGUAGE_ARRAY = Object.values(ILanguageParam);
 export const LANGUAGE_OBJ = {
   [ILanguageParam.english]: 'Английский',
   [ILanguageParam.russian]: 'Русский',
-  [ILanguageParam.spanish]: 'Испанский',
-  [ILanguageParam.french]: 'Французский',
 };
 
 //  lang = 'de-DE'; Немецкий
@@ -48,18 +44,14 @@ export const FIGURE_MAP = new Map([
   ['КРУГ', IFigureShape.circle],
   ['КРУЖОК', IFigureShape.circle],
   ['CIRCLE', IFigureShape.circle],
-  ['CERCLE', IFigureShape.circle],
-  ['CÍRCULO', IFigureShape.circle],
+
   //
   ['КВАДРАТ', IFigureShape.square],
   ['SQUARE', IFigureShape.square],
-  ['CARRÉ', IFigureShape.square],
-  ['CUADRADO', IFigureShape.square],
+
   //
   ['ТРЕУГОЛЬНИК', IFigureShape.triangle],
   ['TRIANGLE', IFigureShape.triangle],
-  ['TRIANGLE', IFigureShape.triangle],
-  ['TRIÁNGULO', IFigureShape.triangle],
 ]);
 export const FIGURE_COLOR_MAP = new Map([
   ['КРАСНЫЙ', 'red'],
@@ -79,24 +71,6 @@ export const FIGURE_COLOR_MAP = new Map([
   ['VIOLET', 'violet'],
   ['BLACK', 'black'],
   ['WHITE', 'white'],
-  //
-  ['ROUGE', 'red'],
-  ['ORANGE', 'orange'],
-  ['JAUNE', 'yellow'],
-  ['VERT', 'green'],
-  ['BLEU', 'blue'],
-  ['VIOLET', 'violet'],
-  ['NOIR', 'black'],
-  ['BLANC', 'white'],
-  //
-  ['ROJO', 'red'],
-  ['NARANJA', 'orange'],
-  ['AMARILLO', 'yellow'],
-  ['VERDE', 'green'],
-  ['AZUL', 'blue'],
-  ['VIOLETA', 'violet'],
-  ['NEGRO', 'black'],
-  ['BLANCO', 'white'],
 ]);
 
 export const FORBIDDEN_VOICES_SET = new Set([

@@ -19,7 +19,7 @@
 
 .tab {
   height: var(--button-height);
-  width: 25%;
+  width: 50%;
   color: #4a4a4a;
   text-align: center;
   display: flex;
