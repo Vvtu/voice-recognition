@@ -1,7 +1,7 @@
 body {
   box-sizing: border-box;
   scrollbar-width: thin;
-  font-family: Verdana;
+  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
 }
 
 :root {

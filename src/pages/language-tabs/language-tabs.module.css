@@ -7,7 +7,7 @@
   flex-grow: 1;
   margin: 20px;
   flex-shrink: 0;
-  font-family: Verdana;
+
   font-size: var(--font-size-22);
   font-style: normal;
   font-weight: 600;
@@ -78,7 +78,7 @@
 .micButtonContainer {
   height: var(--button-height);
   width: 370px;
-  font-family: Verdana;
+
   font-size: var(--font-size-22);
   font-style: normal;
   font-weight: 600;

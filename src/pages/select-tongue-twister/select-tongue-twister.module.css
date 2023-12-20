@@ -22,7 +22,6 @@
   height: var(--button-height);
   width: 200px;
 
-  font-family: Verdana;
   font-size: var(--font-size-22);
   font-style: normal;
   font-weight: 600;
@@ -65,7 +64,7 @@
 .itemText {
   margin: 8px 0 32px 0;
   color: #4a4a4a;
-  font-family: Verdana;
+
   font-size: var(--font-size-22);
   font-style: normal;
   font-weight: 600;
@@ -75,7 +74,7 @@
 .header {
   padding: 30px 20px 20px 70px;
   color: #4a4a4a;
-  font-family: Verdana;
+
   font-size: var(--font-size-28);
   font-style: normal;
   font-weight: 600;

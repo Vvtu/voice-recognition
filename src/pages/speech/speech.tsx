@@ -10,7 +10,9 @@ import {
   WORDS_LIMIT,
   PRONUNCIATION_CHECK,
   ROBOT_VOICE_PARAM,
+  TONGUE_TWISTER_INDEX,
 } from '@/app-constants';
+import { PlayButton, IPlayButtonState } from '@/components/play-button/play-button';
 import panelStyles from '@/pages/panel.module.css';
 import { SettingsPanel } from '@/pages/settings-panel/settings-panel';
 import { pronunciationWords } from '@/pronunciation-words/pronunciation-words';
@@ -26,11 +28,18 @@ export function Speech() {
 
   const languageParam = (searchParams.get(LANGUAGE_PARAM) ??
     ILanguageParam.russian) as ILanguageParam;
-  const pronunciationCheck = (searchParams.get(PRONUNCIATION_CHECK) ?? 'true') === 'true';
+
+  const tongueTwisterIndex = searchParams.get(TONGUE_TWISTER_INDEX) as string;
+
+  const tongueTwister = tongueTwisterIndex
+    ? pronunciationWords[languageParam][parseInt(tongueTwisterIndex, 10)]
+    : '';
+  console.log('%c Speech   tongueTwister = ', 'color: #bada55', tongueTwister); //TODO - delete vvtu
 
   const robotVoiceParam000 = parseInt(searchParams.get(ROBOT_VOICE_PARAM) ?? '', 10);
   const robotVoiceParam = isNaN(robotVoiceParam000) ? -1 : robotVoiceParam000;
 
+  const [playOrigin, setPlayOrigin] = useState<IPlayButtonState>('pause');
   const [browserIsSupported, setBrowserIsSupported] = useState<boolean>(true);
   const [microphoneStatus, setMicrophoneStatus] = useState<'on' | 'off'>('off');
   const [spokenWords, setSpokenWords] = useState<SpeechRecognitionAlternative[]>([]);
@@ -38,6 +47,7 @@ export function Speech() {
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const recognitionRef = useRef<SpeechRecognition | undefined>();
   const limitExceeded = spokenWords.length >= WORDS_LIMIT;
+  const pronunciationCheck = (searchParams.get(PRONUNCIATION_CHECK) ?? 'true') === 'true';
 
   console.log('[33m microphoneStatus = ', microphoneStatus); //TODO - delete vvtu
   console.log('[31m spokenWords = ', spokenWords); //TODO - delete vvtu
@@ -194,7 +204,28 @@ export function Speech() {
       <div className={styles.layout}>
         <SettingsPanel voices={voices} />
         <div className={classNames(panelStyles.panelColorAndBorder, styles.flexGrow)}>
-          {spokenWords.map((word, index) => {
+          {tongueTwister && (
+            <div style={{ marginLeft: '16px', display: 'flex', alignItems: 'center' }}>
+              <PlayButton
+                buttonState={playOrigin}
+                setButtonState={(w: IPlayButtonState) => {
+                  if (w === 'play') {
+                    setPlayOrigin('play');
+                    const voice = voices[robotVoiceParam] ?? voices[0];
+                    voice &&
+                      tongueTwister &&
+                      handleTextToSpeech(tongueTwister, voice).then(() => {
+                        setPlayOrigin('pause');
+                      });
+                  }
+                }}
+              />
+              <div className={classNames(styles.wordContainer, styles.blueColor)}>
+                {tongueTwister}
+              </div>
+            </div>
+          )}
+          {/* {spokenWords.map((word, index) => {
             const match =
               !pronunciationCheck || reshuffledWords[index] === spokenWords[index]?.transcript;
 
@@ -232,7 +263,7 @@ export function Speech() {
                 className={classNames(limitExceeded ? styles.black : styles.grey, styles.totalLine)}
               >{`${(averageConfidence * 100).toFixed(2)}%`}</div>
             </div>
-          )}
+          )}*/}
         </div>
       </div>
     </>

@@ -6,7 +6,7 @@
   gap: 20px;
 }
 .centerContainer {
-  margin-top: 40px;
+  margin-top: 20px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -17,7 +17,6 @@
   height: var(--button-height);
   width: 25%;
 
-  font-family: Verdana;
   font-size: var(--font-size-22);
   font-style: normal;
   font-weight: 600;
@@ -66,11 +65,10 @@
   align-items: center;
   padding: 20px 20px 10px 20px;
 
-  font-family: Verdana;
   font-size: var(--font-size-28);
   font-style: normal;
-  font-weight: 900;
-  line-height: var(--font-size-28); /* 166.667% */
+  font-weight: 600;
+  line-height: 1.25; /* 166.667% */
   letter-spacing: 0.5px;
 }
 
@@ -100,4 +98,8 @@
 
 .flexGrow {
   flex-grow: 2;
+}
+
+.blueColor {
+  color: rgb(36, 138, 238);
 }
