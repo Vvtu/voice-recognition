@@ -18,7 +18,6 @@ import { getVoicesArray } from '@/utils/get-voices-array';
 import { handleTextToSpeech } from '@/utils/handle-text-to-speech';
 import { reshuffle } from '@/utils/reshuffle';
 
-import { Figure } from './figure';
 import micIcon from './mic.svg';
 import styles from './speech.module.css';
 
@@ -33,13 +32,14 @@ export function Speech() {
   const robotVoiceParam = isNaN(robotVoiceParam000) ? -1 : robotVoiceParam000;
 
   const [browserIsSupported, setBrowserIsSupported] = useState<boolean>(true);
-  const [workingStatus, setWorkingStatus] = useState<'on' | 'off'>('off');
+  const [microphoneStatus, setMicrophoneStatus] = useState<'on' | 'off'>('off');
   const [spokenWords, setSpokenWords] = useState<SpeechRecognitionAlternative[]>([]);
   const [reshuffledWords, setReshuffledWords] = useState<string[]>([]);
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const recognitionRef = useRef<SpeechRecognition | undefined>();
   const limitExceeded = spokenWords.length >= WORDS_LIMIT;
 
+  console.log('[33m microphoneStatus = ', microphoneStatus); //TODO - delete vvtu
   console.log('[31m spokenWords = ', spokenWords); //TODO - delete vvtu
   console.log('[33m reshuffledWords = ', reshuffledWords); //TODO - delete vvtu
 
@@ -49,14 +49,14 @@ export function Speech() {
       languageParam === languageParam ||
       pronunciationCheck === pronunciationCheck
     ) {
-      setWorkingStatus('off');
+      setMicrophoneStatus('off');
       setSpokenWords([]);
     }
   }, [robotVoiceParam, languageParam, pronunciationCheck]);
 
   useEffect(() => {
     if (limitExceeded) {
-      setWorkingStatus('off');
+      setMicrophoneStatus('off');
     }
   }, [limitExceeded]);
 
@@ -110,17 +110,17 @@ export function Speech() {
   }, [languageParam, limitExceeded, robotVoiceParam, voices]);
 
   useEffect(() => {
-    if (workingStatus === 'on') {
+    if (microphoneStatus === 'on') {
       try {
         recognitionRef.current?.start();
-        // doesn't prevent error "Failed to execute 'workingStatus' on 'SpeechRecognition': recognition has already started"
+        // doesn't prevent error "Failed to execute 'microphoneStatus' on 'SpeechRecognition': recognition has already started"
       } catch (error) {
         console.error(error);
       }
     } else {
       recognitionRef.current?.stop();
     }
-  }, [workingStatus]);
+  }, [microphoneStatus]);
 
   useEffect(() => {
     getVoicesArray(languageParam).then((vcs) => {
@@ -165,11 +165,11 @@ export function Speech() {
         <button
           className={classNames(
             styles.micButtonContainer,
-            workingStatus === 'off' ? styles.micButtonContainerOff : styles.micButtonContainerOn,
+            microphoneStatus === 'off' ? styles.micButtonContainerOff : styles.micButtonContainerOn,
           )}
           onClick={() => {
-            if (workingStatus === 'off') {
-              setWorkingStatus('on');
+            if (microphoneStatus === 'off') {
+              setMicrophoneStatus('on');
               setSpokenWords([]);
               setReshuffledWords(
                 pronunciationCheck
@@ -180,7 +180,7 @@ export function Speech() {
                   : [],
               );
             } else {
-              setWorkingStatus('off');
+              setMicrophoneStatus('off');
             }
           }}
         >
@@ -189,7 +189,6 @@ export function Speech() {
             {'Микрофон'}
           </div>
         </button>
-        <Figure word={spokenWords[spokenWords.length - 1]?.transcript} />
       </div>
       <br />
       <div className={styles.layout}>
@@ -213,17 +212,19 @@ export function Speech() {
               </div>
             );
           })}
-          {workingStatus === 'on' && pronunciationCheck && reshuffledWords[spokenWords.length] && (
-            <div
-              key={reshuffledWords[spokenWords.length]}
-              className={classNames(styles.wordContainer, styles.micButtonContainerOn)}
-            >
-              <div className={classNames(styles.index, styles.grey)}>{`${
-                spokenWords.length + 1
-              }.`}</div>
-              <div className={styles.grey}>{reshuffledWords[spokenWords.length]}</div>
-            </div>
-          )}
+          {microphoneStatus === 'on' &&
+            pronunciationCheck &&
+            reshuffledWords[spokenWords.length] && (
+              <div
+                key={reshuffledWords[spokenWords.length]}
+                className={classNames(styles.wordContainer, styles.micButtonContainerOn)}
+              >
+                <div className={classNames(styles.index, styles.grey)}>{`${
+                  spokenWords.length + 1
+                }.`}</div>
+                <div className={styles.grey}>{reshuffledWords[spokenWords.length]}</div>
+              </div>
+            )}
           {spokenWords.length > 0 && (
             <div className={classNames(styles.wordContainer)}>
               <div className={styles.grow} />
