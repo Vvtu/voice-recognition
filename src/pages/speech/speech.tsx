@@ -206,14 +206,7 @@ export function Speech() {
         <div className={classNames(panelStyles.panelColorAndBorder, styles.flexGrow)}>
           {tongueTwister && (
             <>
-              <div
-                style={{
-                  margin: '16px 0 16px 16px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '16px',
-                }}
-              >
+              <div className={styles.row}>
                 <PlayButton
                   buttonState={playOrigin}
                   setButtonState={(w: IPlayButtonState) => {

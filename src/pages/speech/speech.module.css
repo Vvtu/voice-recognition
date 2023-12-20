@@ -13,6 +13,13 @@
   justify-content: center;
 }
 
+.row {
+  margin: 16px 0 16px 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
 .micButtonContainer {
   height: var(--button-height);
   width: 25%;
