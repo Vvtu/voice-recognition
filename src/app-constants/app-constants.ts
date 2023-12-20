@@ -7,6 +7,8 @@ export const ROBOT_VOICE_PARAM = 'robotVoice';
 export const PRONUNCIATION_CHECK = 'pronunciationCheck';
 export const TONGUE_TWISTER_INDEX = 'tongueTwisterIndex';
 
+export const SELECT_TONGUE_TWISTER = 'select-tongue-twister';
+
 // eslint-disable-next-line no-shadow
 export enum ILanguageParam {
   russian = 'ru-RU',
