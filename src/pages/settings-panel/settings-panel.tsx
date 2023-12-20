@@ -5,13 +5,13 @@ import { useSearchParams } from 'react-router-dom';
 import classNames from 'classnames';
 
 import { ROBOT_VOICE_PARAM, PRONUNCIATION_CHECK, FORBIDDEN_VOICES_SET } from '@/app-constants';
+import checkIconChecked from '@/icons/check-icon-checked.svg';
+import checkIconEmpty from '@/icons/check-icon-empty.svg';
+import radioButtonUnchecked from '@/icons/radio-button-unchecked.svg';
+import radioButton from '@/icons/radio-button.svg';
 import panelStyles from '@/pages/panel.module.css';
 import { getNewSearchParams } from '@/utils/get-new-search-params';
 
-import checkIconChecked from './check-icon-checked.svg';
-import checkIconEmpty from './check-icon-empty.svg';
-import radioButtonUnchecked from './radio-button-unchecked.svg';
-import radioButton from './radio-button.svg';
 import styles from './settings-panel.module.css';
 
 export function SettingsPanel({ voices }: { voices: SpeechSynthesisVoice[] }) {

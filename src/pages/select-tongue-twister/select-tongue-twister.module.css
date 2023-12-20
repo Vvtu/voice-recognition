@@ -1,0 +1,78 @@
+.layout {
+  margin: 20px 20px;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  gap: 20px;
+}
+
+.panelColorAndBorder {
+  border-radius: var(--border-radius-15);
+  background-color: #fff;
+  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.5);
+}
+
+.micButtonContainer {
+  height: var(--button-height);
+  width: 200px;
+
+  font-family: Verdana;
+  font-size: var(--font-size-22);
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px; /* 166.667% */
+  letter-spacing: 0.5px;
+  border: 1px solid #dfe5ec;
+  border-radius: var(--border-radius-15);
+  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #fff;
+  background-color: red;
+}
+
+.micButton {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.itemContainer {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: stretch;
+  padding: 0px 20px;
+}
+.itemContainer:hover {
+  background: #f1fcff;
+}
+
+.itemSubContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.itemText {
+  color: #4a4a4a;
+  font-family: Verdana;
+  font-size: var(--font-size-22);
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px; /* 153.846% */
+}
+
+.header {
+  padding: 10px 20px;
+  color: #4a4a4a;
+  font-family: Verdana;
+  font-size: var(--font-size-22);
+  font-style: normal;
+  font-weight: 600;
+  line-height: 12px; /* 100% */
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
