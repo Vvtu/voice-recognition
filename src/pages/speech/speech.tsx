@@ -34,7 +34,6 @@ export function Speech() {
   const tongueTwister = tongueTwisterIndex
     ? pronunciationWords[languageParam][parseInt(tongueTwisterIndex, 10)]
     : '';
-  console.log('%c Speech   tongueTwister = ', 'color: #bada55', tongueTwister); //TODO - delete vvtu
 
   const robotVoiceParam000 = parseInt(searchParams.get(ROBOT_VOICE_PARAM) ?? '', 10);
   const robotVoiceParam = isNaN(robotVoiceParam000) ? -1 : robotVoiceParam000;
@@ -48,10 +47,6 @@ export function Speech() {
   const recognitionRef = useRef<SpeechRecognition | undefined>();
   const limitExceeded = spokenWords.length >= WORDS_LIMIT;
   const pronunciationCheck = (searchParams.get(PRONUNCIATION_CHECK) ?? 'true') === 'true';
-
-  console.log('[33m microphoneStatus = ', microphoneStatus); //TODO - delete vvtu
-  console.log('[31m spokenWords = ', spokenWords); //TODO - delete vvtu
-  console.log('[33m reshuffledWords = ', reshuffledWords); //TODO - delete vvtu
 
   useEffect(() => {
     if (
@@ -91,13 +86,14 @@ export function Speech() {
       e.stopPropagation();
       console.log('[33m e.results = ', e.results); //TODO - delete vvtu
       const spokenWordsArr = Array.from(e.results)
-
         //@ts-ignore
         .map((result1) => result1[0])
         .map((result) => ({
           transcript: result.transcript.toUpperCase().trim(),
           confidence: result.confidence,
         }));
+      console.log('%c Speech Speech spokenWordsArr = = ', 'color: #bada55', spokenWordsArr); //TODO - delete vvtu
+
       const lastWord = spokenWordsArr[spokenWordsArr.length - 1];
       setSpokenWords((arr) => [...arr, lastWord]);
 
@@ -150,8 +146,6 @@ export function Speech() {
   }
   averageConfidence /= spokenWords.length;
 
-  console.log('[33m browserIsSupported = ', browserIsSupported); //TODO - delete vvtu
-
   if (browserIsSupported === false) {
     return (
       <div className={styles.centerContainer}>
@@ -167,39 +161,9 @@ export function Speech() {
     );
   }
 
-  console.log('[33m spokenWords = ', spokenWords); //TODO - delete vvtu
-
   return (
     <>
-      <div className={styles.centerContainer}>
-        <button
-          className={classNames(
-            styles.micButtonContainer,
-            microphoneStatus === 'off' ? styles.micButtonContainerOff : styles.micButtonContainerOn,
-          )}
-          onClick={() => {
-            if (microphoneStatus === 'off') {
-              setMicrophoneStatus('on');
-              setSpokenWords([]);
-              setReshuffledWords(
-                pronunciationCheck
-                  ? (reshuffle(pronunciationWords[languageParam] ?? []).slice(
-                      0,
-                      WORDS_LIMIT,
-                    ) as string[])
-                  : [],
-              );
-            } else {
-              setMicrophoneStatus('off');
-            }
-          }}
-        >
-          <div className={styles.micButton}>
-            <img src={micIcon} alt="micIcon" />
-            {'Микрофон'}
-          </div>
-        </button>
-      </div>
+      <div className={styles.centerContainer}></div>
       <br />
       <div className={styles.layout}>
         <SettingsPanel voices={voices} />
@@ -224,6 +188,38 @@ export function Speech() {
                 <div className={classNames(styles.wordContainer, styles.blueColor)}>
                   {tongueTwister}
                 </div>
+              </div>
+              <div className={styles.row}>
+                <button
+                  className={classNames(
+                    styles.micButtonContainer,
+                    microphoneStatus === 'off'
+                      ? styles.micButtonContainerOff
+                      : styles.micButtonContainerOn,
+                  )}
+                  onClick={() => {
+                    if (microphoneStatus === 'off') {
+                      setMicrophoneStatus('on');
+                      setSpokenWords([]);
+                      setReshuffledWords(
+                        pronunciationCheck
+                          ? (reshuffle(pronunciationWords[languageParam] ?? []).slice(
+                              0,
+                              WORDS_LIMIT,
+                            ) as string[])
+                          : [],
+                      );
+                    } else {
+                      setMicrophoneStatus('off');
+                    }
+                  }}
+                >
+                  <div className={styles.micButton}>
+                    <img src={micIcon} alt="micIcon" />
+                  </div>
+                </button>
+
+                <div className={classNames(styles.wordContainer)}>{tongueTwister}</div>
               </div>
             </>
           )}
