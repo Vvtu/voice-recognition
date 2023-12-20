@@ -13,7 +13,7 @@
   justify-content: center;
 }
 
-.micButtonContaineer {
+.micButtonContainer {
   height: var(--button-height);
   width: 25%;
 
@@ -46,11 +46,11 @@
   }
 }
 
-.micButtonContaineerOn {
+.micButtonContainerOn {
   animation: logo-opacity infinite 2s linear;
 }
 
-.micButtonContaineerOff {
+.micButtonContainerOff {
   opacity: 0.5;
   background-color: grey;
 }

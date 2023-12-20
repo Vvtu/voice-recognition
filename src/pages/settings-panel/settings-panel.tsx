@@ -20,7 +20,7 @@ export function SettingsPanel({ voices }: { voices: SpeechSynthesisVoice[] }) {
   const robotVoiceParam000 = parseInt(searchParams.get(ROBOT_VOICE_PARAM) ?? '', 10);
   const robotVoiceParam = isNaN(robotVoiceParam000) ? -1 : robotVoiceParam000;
 
-  const pronunciationСheck = (searchParams.get(PRONUNCIATION_СHECK) ?? 'true') === 'true';
+  const pronunciationCheck = (searchParams.get(PRONUNCIATION_СHECK) ?? 'true') === 'true';
 
   function handleItemClicked(value: number) {
     const newParams = getNewSearcParams(searchParams);
@@ -66,7 +66,7 @@ export function SettingsPanel({ voices }: { voices: SpeechSynthesisVoice[] }) {
     <div className={classNames(styles.layout, panelStyles.panelColorAndBorder)}>
       <div className={styles.header}>Настройки</div>
 
-      {pronunciationСheck ? (
+      {pronunciationCheck ? (
         <div
           className={styles.itemContainer}
           onClick={() => handlePronunciationСheckClicked(false)}

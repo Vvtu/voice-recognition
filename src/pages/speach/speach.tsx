@@ -27,7 +27,7 @@ export function Speach() {
 
   const languageParam = (searchParams.get(LANGUAGE_PARAM) ??
     ILanguageParam.russian) as ILanguageParam;
-  const pronunciationСheck = (searchParams.get(PRONUNCIATION_СHECK) ?? 'true') === 'true';
+  const pronunciationCheck = (searchParams.get(PRONUNCIATION_СHECK) ?? 'true') === 'true';
 
   const robotVoiceParam000 = parseInt(searchParams.get(ROBOT_VOICE_PARAM) ?? '', 10);
   const robotVoiceParam = isNaN(robotVoiceParam000) ? -1 : robotVoiceParam000;
@@ -47,12 +47,12 @@ export function Speach() {
     if (
       robotVoiceParam === robotVoiceParam ||
       languageParam === languageParam ||
-      pronunciationСheck === pronunciationСheck
+      pronunciationCheck === pronunciationCheck
     ) {
       setWorkingStatus('off');
       setSpokenWords([]);
     }
-  }, [robotVoiceParam, languageParam, pronunciationСheck]);
+  }, [robotVoiceParam, languageParam, pronunciationCheck]);
 
   useEffect(() => {
     if (limitExceeded) {
@@ -76,13 +76,12 @@ export function Speach() {
     recognition.lang = languageParam;
     recognition.interimResults = false;
     recognition.maxAlternatives = 2;
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     function addEventListenerHandler(e) {
       e.stopPropagation();
       console.log('[33m e.results = ', e.results); //TODO - delete vvtu
       const spokenWordsArr = Array.from(e.results)
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
         //@ts-ignore
         .map((result1) => result1[0])
         .map((result) => ({
@@ -133,7 +132,7 @@ export function Speach() {
   for (let index = 0; index < spokenWords.length; index++) {
     averageConfidence +=
       spokenWords[index].confidence *
-      (pronunciationСheck
+      (pronunciationCheck
         ? reshuffledWords[index] === spokenWords[index]?.transcript
           ? 1
           : 0
@@ -163,17 +162,17 @@ export function Speach() {
   return (
     <>
       <div className={styles.centerContainer}>
-        <div
+        <button
           className={classNames(
-            styles.micButtonContaineer,
-            workingStatus === 'off' ? styles.micButtonContaineerOff : styles.micButtonContaineerOn,
+            styles.micButtonContainer,
+            workingStatus === 'off' ? styles.micButtonContainerOff : styles.micButtonContainerOn,
           )}
           onClick={() => {
             if (workingStatus === 'off') {
               setWorkingStatus('on');
               setSpokenWords([]);
               setReshuffledWords(
-                pronunciationСheck
+                pronunciationCheck
                   ? (reshuffle(pronunciationWords[languageParam] ?? []).slice(
                       0,
                       WORDS_LIMIT,
@@ -189,7 +188,7 @@ export function Speach() {
             <img src={micIcon} alt="micIcon" />
             {'Микрофон'}
           </div>
-        </div>
+        </button>
         <Figure word={spokenWords[spokenWords.length - 1]?.transcript} />
       </div>
       <br />
@@ -198,10 +197,10 @@ export function Speach() {
         <div className={classNames(panelStyles.panelColorAndBorder, styles.flexGrow)}>
           {spokenWords.map((word, index) => {
             const match =
-              !pronunciationСheck || reshuffledWords[index] === spokenWords[index]?.transcript;
+              !pronunciationCheck || reshuffledWords[index] === spokenWords[index]?.transcript;
 
             return (
-              <div className={styles.wordContainer} key={`${word}-${index}`}>
+              <div className={styles.wordContainer} key={`${word}_${index}`}>
                 <div className={classNames(styles.index, styles.grey)}>{`${index + 1}.`}</div>
                 {!match && reshuffledWords[index] && (
                   <div className={styles.grey}>{`(${reshuffledWords[index]})\u00A0`}</div>
@@ -214,10 +213,10 @@ export function Speach() {
               </div>
             );
           })}
-          {workingStatus === 'on' && pronunciationСheck && reshuffledWords[spokenWords.length] && (
+          {workingStatus === 'on' && pronunciationCheck && reshuffledWords[spokenWords.length] && (
             <div
               key={reshuffledWords[spokenWords.length]}
-              className={classNames(styles.wordContainer, styles.micButtonContaineerOn)}
+              className={classNames(styles.wordContainer, styles.micButtonContainerOn)}
             >
               <div className={classNames(styles.index, styles.grey)}>{`${
                 spokenWords.length + 1
