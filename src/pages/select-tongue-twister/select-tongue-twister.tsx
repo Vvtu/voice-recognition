@@ -46,7 +46,7 @@ export function SelectTongueTwister() {
       </button>
       <div className={classNames(styles.layout, styles.panelColorAndBorder)}>
         <div className={styles.list}>
-          <div className={styles.header}>Настройки</div>
+          <div className={styles.header}>Выбор скороговорки</div>
 
           {tongueTwisters.map((twister, index) => (
             <div

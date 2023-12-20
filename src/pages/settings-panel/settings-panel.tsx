@@ -20,8 +20,6 @@ export function SettingsPanel({ voices }: { voices: SpeechSynthesisVoice[] }) {
   const robotVoiceParam000 = parseInt(searchParams.get(ROBOT_VOICE_PARAM) ?? '', 10);
   const robotVoiceParam = isNaN(robotVoiceParam000) ? -1 : robotVoiceParam000;
 
-  const pronunciationCheck = (searchParams.get(PRONUNCIATION_CHECK) ?? 'true') === 'true';
-
   function handleItemClicked(value: number) {
     const newParams = getNewSearchParams(searchParams);
     if (value === -1) {
@@ -32,16 +30,7 @@ export function SettingsPanel({ voices }: { voices: SpeechSynthesisVoice[] }) {
 
     setSearchParams(newParams);
   }
-  function handlePronunciationCheckClicked(value: boolean) {
-    const newParams = getNewSearchParams(searchParams);
-    if (value) {
-      delete newParams[PRONUNCIATION_CHECK];
-    } else {
-      newParams[PRONUNCIATION_CHECK] = false;
-    }
 
-    setSearchParams(newParams);
-  }
   const voiceOptions = useMemo(() => {
     const result = voices
       .map((item, index) => ({ name: item.name, index }))
@@ -64,26 +53,7 @@ export function SettingsPanel({ voices }: { voices: SpeechSynthesisVoice[] }) {
 
   return (
     <div className={classNames(styles.layout, panelStyles.panelColorAndBorder)}>
-      <div className={styles.header}>Настройки</div>
-
-      {pronunciationCheck ? (
-        <div
-          className={styles.itemContainer}
-          onClick={() => handlePronunciationCheckClicked(false)}
-        >
-          <div className={styles.itemSubContainer}>
-            <img src={checkIconChecked} alt="icon checked" width="40px" height="40px" />
-            <div className={styles.itemText}>{'Предлагать слова'}</div>
-          </div>
-        </div>
-      ) : (
-        <div className={styles.itemContainer} onClick={() => handlePronunciationCheckClicked(true)}>
-          <div className={styles.itemSubContainer}>
-            <img src={checkIconEmpty} alt="icon checked" width="40px" height="40px" />
-            <div className={styles.itemText}>{'Предлагать слова'}</div>
-          </div>
-        </div>
-      )}
+      <div className={styles.header}>Выбор голоса</div>
 
       <div className={styles.divider} />
       {voiceOptions.map(({ value, label }) => (

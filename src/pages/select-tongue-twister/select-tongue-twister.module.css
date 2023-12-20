@@ -73,13 +73,15 @@
 }
 
 .header {
-  padding: 10px 20px;
+  padding: 30px 20px 20px 70px;
   color: #4a4a4a;
   font-family: Verdana;
-  font-size: var(--font-size-22);
+  font-size: var(--font-size-28);
   font-style: normal;
   font-weight: 600;
-  line-height: 12px; /* 100% */
+  line-height: 14px; /* 100% */
   letter-spacing: 0.5px;
   margin-bottom: 10px;
+
+  color: rgb(36, 138, 238);
 }
