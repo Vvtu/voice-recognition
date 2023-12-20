@@ -4,7 +4,7 @@
   padding: 20px 0 10px 0;
 }
 
-.devider {
+.divider {
   width: calc(100% - 40px);
   height: 2px;
   background-color: #4a4a4a;
@@ -34,7 +34,7 @@
   background: #f1fcff;
 }
 
-.itemSubcontainer {
+.itemSubContainer {
   display: flex;
   align-items: center;
   gap: 10px;

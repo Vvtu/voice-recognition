@@ -1,4 +1,4 @@
-import { Speach } from '@/pages/speach/speach';
+import { Speech } from '@/pages/speech/speech';
 
 import styles from './app.module.css';
 import { LanguageTabs } from './language-tabs';
@@ -8,7 +8,7 @@ export function App() {
     <div className={styles.appContainer}>
       <div className={styles.height0}>&nbsp;</div>
       <LanguageTabs />
-      <Speach />
+      <Speech />
     </div>
   );
 }

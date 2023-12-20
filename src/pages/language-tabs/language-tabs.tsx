@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import classNames from 'classnames';
 
 import { LANGUAGE_PARAM, ILanguageParam, LANGUAGE_ARRAY, LANGUAGE_OBJ } from '@/app-constants';
-import { getNewSearcParams } from '@/utils/get-new-searc-params';
+import { getNewSearchParams } from '@/utils/get-new-search-params';
 
 import styles from './language-tabs.module.css';
 
@@ -12,7 +12,7 @@ export function LanguageTabs() {
 
   const languageParam = searchParams.get(LANGUAGE_PARAM) ?? ILanguageParam.russian;
   function handleTabClick(choice: ILanguageParam) {
-    const newParams = getNewSearcParams(searchParams);
+    const newParams = getNewSearchParams(searchParams);
     newParams[LANGUAGE_PARAM] = choice;
     if (choice === LANGUAGE_OBJ[ILanguageParam.russian]) {
       delete newParams[LANGUAGE_PARAM];

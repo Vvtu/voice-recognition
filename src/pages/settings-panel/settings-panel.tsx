@@ -4,9 +4,9 @@ import { useSearchParams } from 'react-router-dom';
 
 import classNames from 'classnames';
 
-import { ROBOT_VOICE_PARAM, PRONUNCIATION_СHECK, FORBIDEN_VOICES_SET } from '@/app-constants';
+import { ROBOT_VOICE_PARAM, PRONUNCIATION_CHECK, FORBIDDEN_VOICES_SET } from '@/app-constants';
 import panelStyles from '@/pages/panel.module.css';
-import { getNewSearcParams } from '@/utils/get-new-searc-params';
+import { getNewSearchParams } from '@/utils/get-new-search-params';
 
 import checkIconChecked from './check-icon-checked.svg';
 import checkIconEmpty from './check-icon-empty.svg';
@@ -20,10 +20,10 @@ export function SettingsPanel({ voices }: { voices: SpeechSynthesisVoice[] }) {
   const robotVoiceParam000 = parseInt(searchParams.get(ROBOT_VOICE_PARAM) ?? '', 10);
   const robotVoiceParam = isNaN(robotVoiceParam000) ? -1 : robotVoiceParam000;
 
-  const pronunciationCheck = (searchParams.get(PRONUNCIATION_СHECK) ?? 'true') === 'true';
+  const pronunciationCheck = (searchParams.get(PRONUNCIATION_CHECK) ?? 'true') === 'true';
 
   function handleItemClicked(value: number) {
-    const newParams = getNewSearcParams(searchParams);
+    const newParams = getNewSearchParams(searchParams);
     if (value === -1) {
       delete newParams[ROBOT_VOICE_PARAM];
     } else {
@@ -32,12 +32,12 @@ export function SettingsPanel({ voices }: { voices: SpeechSynthesisVoice[] }) {
 
     setSearchParams(newParams);
   }
-  function handlePronunciationСheckClicked(value: boolean) {
-    const newParams = getNewSearcParams(searchParams);
+  function handlePronunciationCheckClicked(value: boolean) {
+    const newParams = getNewSearchParams(searchParams);
     if (value) {
-      delete newParams[PRONUNCIATION_СHECK];
+      delete newParams[PRONUNCIATION_CHECK];
     } else {
-      newParams[PRONUNCIATION_СHECK] = false;
+      newParams[PRONUNCIATION_CHECK] = false;
     }
 
     setSearchParams(newParams);
@@ -45,7 +45,7 @@ export function SettingsPanel({ voices }: { voices: SpeechSynthesisVoice[] }) {
   const voiceOptions = useMemo(() => {
     const result = voices
       .map((item, index) => ({ name: item.name, index }))
-      .filter((item) => !FORBIDEN_VOICES_SET.has(item.name))
+      .filter((item) => !FORBIDDEN_VOICES_SET.has(item.name))
       .slice(0, 5)
       .map((voice) => {
         const arr = voice.name.split(' ');
@@ -69,26 +69,26 @@ export function SettingsPanel({ voices }: { voices: SpeechSynthesisVoice[] }) {
       {pronunciationCheck ? (
         <div
           className={styles.itemContainer}
-          onClick={() => handlePronunciationСheckClicked(false)}
+          onClick={() => handlePronunciationCheckClicked(false)}
         >
-          <div className={styles.itemSubcontainer}>
+          <div className={styles.itemSubContainer}>
             <img src={checkIconChecked} alt="icon checked" width="40px" height="40px" />
             <div className={styles.itemText}>{'Предлагать слова'}</div>
           </div>
         </div>
       ) : (
-        <div className={styles.itemContainer} onClick={() => handlePronunciationСheckClicked(true)}>
-          <div className={styles.itemSubcontainer}>
+        <div className={styles.itemContainer} onClick={() => handlePronunciationCheckClicked(true)}>
+          <div className={styles.itemSubContainer}>
             <img src={checkIconEmpty} alt="icon checked" width="40px" height="40px" />
             <div className={styles.itemText}>{'Предлагать слова'}</div>
           </div>
         </div>
       )}
 
-      <div className={styles.devider} />
+      <div className={styles.divider} />
       {voiceOptions.map(({ value, label }) => (
         <div key={label} className={styles.itemContainer} onClick={() => handleItemClicked(value)}>
-          <div className={styles.itemSubcontainer}>
+          <div className={styles.itemSubContainer}>
             {robotVoiceParam === value ? (
               <img src={radioButton} alt="icon checked" width="40px" height="40px" />
             ) : (

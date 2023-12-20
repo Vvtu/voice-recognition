@@ -1,4 +1,4 @@
-export const handleTextToSpeach = (text: string, voice: SpeechSynthesisVoice) =>
+export const handleTextToSpeech = (text: string, voice: SpeechSynthesisVoice) =>
   new Promise((resolve) => {
     const utterThis = new SpeechSynthesisUtterance();
 

@@ -4,7 +4,7 @@ export const PROBABILITY_OF_ERROR = 0.3;
 
 export const LANGUAGE_PARAM = 'language';
 export const ROBOT_VOICE_PARAM = 'robotVoice';
-export const PRONUNCIATION_СHECK = 'pronunciationCheck';
+export const PRONUNCIATION_CHECK = 'pronunciationCheck';
 
 // eslint-disable-next-line no-shadow
 export enum ILanguageParam {
@@ -99,7 +99,7 @@ export const FIGURE_COLOR_MAP = new Map([
   ['BLANCO', 'white'],
 ]);
 
-export const FORBIDEN_VOICES_SET = new Set([
+export const FORBIDDEN_VOICES_SET = new Set([
   'Google US English',
   'Zarvox',
   'Wobble',

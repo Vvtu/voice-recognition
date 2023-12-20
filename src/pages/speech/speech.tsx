@@ -8,26 +8,26 @@ import {
   ILanguageParam,
   LANGUAGE_PARAM,
   WORDS_LIMIT,
-  PRONUNCIATION_СHECK,
+  PRONUNCIATION_CHECK,
   ROBOT_VOICE_PARAM,
 } from '@/app-constants';
 import panelStyles from '@/pages/panel.module.css';
 import { SettingsPanel } from '@/pages/settings-panel/settings-panel';
 import { pronunciationWords } from '@/pronunciation-words/pronunciation-words';
 import { getVoicesArray } from '@/utils/get-voices-array';
-import { handleTextToSpeach } from '@/utils/handle-text-to-speach';
+import { handleTextToSpeech } from '@/utils/handle-text-to-speech';
 import { reshuffle } from '@/utils/reshuffle';
 
 import { Figure } from './figure';
 import micIcon from './mic.svg';
-import styles from './speach.module.css';
+import styles from './speech.module.css';
 
-export function Speach() {
+export function Speech() {
   const [searchParams /*, setSearchParams */] = useSearchParams();
 
   const languageParam = (searchParams.get(LANGUAGE_PARAM) ??
     ILanguageParam.russian) as ILanguageParam;
-  const pronunciationCheck = (searchParams.get(PRONUNCIATION_СHECK) ?? 'true') === 'true';
+  const pronunciationCheck = (searchParams.get(PRONUNCIATION_CHECK) ?? 'true') === 'true';
 
   const robotVoiceParam000 = parseInt(searchParams.get(ROBOT_VOICE_PARAM) ?? '', 10);
   const robotVoiceParam = isNaN(robotVoiceParam000) ? -1 : robotVoiceParam000;
@@ -96,7 +96,7 @@ export function Speach() {
         const voice = voices[robotVoiceParam] ?? voices[0];
 
         voice &&
-          handleTextToSpeach(lastWord.transcript, voice).then(() => {
+          handleTextToSpeech(lastWord.transcript, voice).then(() => {
             if (!limitExceeded) {
               recognition?.start();
             }
