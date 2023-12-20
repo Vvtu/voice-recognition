@@ -8,6 +8,7 @@ import {
   LANGUAGE_ARRAY,
   LANGUAGE_OBJ,
   SELECT_TONGUE_TWISTER,
+  TONGUE_TWISTER_INDEX,
 } from '@/app-constants';
 import listIcon from '@/icons/list-icon.svg';
 import { getNewSearchParams } from '@/utils/get-new-search-params';
@@ -22,6 +23,7 @@ export function LanguageTabs() {
   function handleTabClick(choice: ILanguageParam) {
     const newParams = getNewSearchParams(searchParams);
     newParams[LANGUAGE_PARAM] = choice;
+    delete newParams[TONGUE_TWISTER_INDEX];
     if (choice === LANGUAGE_OBJ[ILanguageParam.russian]) {
       delete newParams[LANGUAGE_PARAM];
     } else {
