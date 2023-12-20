@@ -110,3 +110,13 @@
 .blueColor {
   color: rgb(36, 138, 238);
 }
+
+.green {
+  color: green;
+  margin-left: 12px;
+}
+
+.red {
+  color: red;
+  margin-left: 12px;
+}

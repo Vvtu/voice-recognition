@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
 
@@ -7,8 +7,6 @@ import classNames from 'classnames';
 import {
   ILanguageParam,
   LANGUAGE_PARAM,
-  WORDS_LIMIT,
-  PRONUNCIATION_CHECK,
   ROBOT_VOICE_PARAM,
   TONGUE_TWISTER_INDEX,
 } from '@/app-constants';
@@ -18,10 +16,16 @@ import { SettingsPanel } from '@/pages/settings-panel/settings-panel';
 import { pronunciationWords } from '@/pronunciation-words/pronunciation-words';
 import { getVoicesArray } from '@/utils/get-voices-array';
 import { handleTextToSpeech } from '@/utils/handle-text-to-speech';
-import { reshuffle } from '@/utils/reshuffle';
 
 import micIcon from './mic.svg';
 import styles from './speech.module.css';
+
+function clearWord(word: string) {
+  const word1 = word.replace(/[.|,]/g, ' ');
+  const arr = word1.split(' ').filter((w) => w !== '' && w != ' ');
+
+  return arr;
+}
 
 export function Speech() {
   const [searchParams /*, setSearchParams */] = useSearchParams();
@@ -42,28 +46,25 @@ export function Speech() {
   const [browserIsSupported, setBrowserIsSupported] = useState<boolean>(true);
   const [microphoneStatus, setMicrophoneStatus] = useState<'on' | 'off'>('off');
   const [spokenWords, setSpokenWords] = useState<SpeechRecognitionAlternative[]>([]);
-  const [reshuffledWords, setReshuffledWords] = useState<string[]>([]);
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const recognitionRef = useRef<SpeechRecognition | undefined>();
-  const limitExceeded = spokenWords.length >= WORDS_LIMIT;
-  const pronunciationCheck = (searchParams.get(PRONUNCIATION_CHECK) ?? 'true') === 'true';
+
+  useEffect(() => {
+    if (spokenWords.length > 0) {
+      setMicrophoneStatus('off');
+    }
+  }, [spokenWords.length]);
 
   useEffect(() => {
     if (
       robotVoiceParam === robotVoiceParam ||
       languageParam === languageParam ||
-      pronunciationCheck === pronunciationCheck
+      tongueTwister === tongueTwister
     ) {
       setMicrophoneStatus('off');
       setSpokenWords([]);
     }
-  }, [robotVoiceParam, languageParam, pronunciationCheck]);
-
-  useEffect(() => {
-    if (limitExceeded) {
-      setMicrophoneStatus('off');
-    }
-  }, [limitExceeded]);
+  }, [robotVoiceParam, languageParam, tongueTwister]);
 
   useEffect(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -103,9 +104,7 @@ export function Speech() {
 
         voice &&
           handleTextToSpeech(lastWord.transcript, voice).then(() => {
-            if (!limitExceeded) {
-              recognition?.start();
-            }
+            recognition?.start();
           });
       }
     }
@@ -113,7 +112,7 @@ export function Speech() {
     recognitionRef.current = recognition;
 
     return () => recognition?.removeEventListener('result', addEventListenerHandler);
-  }, [languageParam, limitExceeded, robotVoiceParam, voices]);
+  }, [languageParam, robotVoiceParam, voices]);
 
   useEffect(() => {
     if (microphoneStatus === 'on') {
@@ -131,20 +130,9 @@ export function Speech() {
   useEffect(() => {
     getVoicesArray(languageParam).then((vcs) => {
       setVoices(vcs);
+      setMicrophoneStatus('off');
     });
   }, [languageParam]);
-
-  let averageConfidence = 0;
-  for (let index = 0; index < spokenWords.length; index++) {
-    averageConfidence +=
-      spokenWords[index].confidence *
-      (pronunciationCheck
-        ? reshuffledWords[index] === spokenWords[index]?.transcript
-          ? 1
-          : 0
-        : 1);
-  }
-  averageConfidence /= spokenWords.length;
 
   if (browserIsSupported === false) {
     return (
@@ -160,6 +148,31 @@ export function Speech() {
       </div>
     );
   }
+
+  const comparisonResult = useMemo(() => {
+    if (tongueTwister) {
+      const spWords = clearWord(spokenWords[0]?.transcript ?? '');
+      if (spWords.length === 0) {
+        return [];
+      }
+
+      const originWords = clearWord(tongueTwister);
+
+      const result = originWords.map((originWord, index) => {
+        const isEqual = originWord.toUpperCase() === (spWords[index] ?? '').toUpperCase();
+
+        return {
+          isEqual,
+          originWord,
+          spokenWord: isEqual ? originWord : (spWords[index] ?? '?').toLowerCase(),
+        };
+      });
+
+      return result;
+    }
+  }, [tongueTwister, spokenWords]);
+
+  console.log('%c Speech comparisonResult = ', 'color: #bada55', comparisonResult); //TODO - delete vvtu
 
   return (
     <>
@@ -201,14 +214,6 @@ export function Speech() {
                     if (microphoneStatus === 'off') {
                       setMicrophoneStatus('on');
                       setSpokenWords([]);
-                      setReshuffledWords(
-                        pronunciationCheck
-                          ? (reshuffle(pronunciationWords[languageParam] ?? []).slice(
-                              0,
-                              WORDS_LIMIT,
-                            ) as string[])
-                          : [],
-                      );
                     } else {
                       setMicrophoneStatus('off');
                     }
@@ -219,49 +224,19 @@ export function Speech() {
                   </div>
                 </button>
 
-                <div className={classNames(styles.wordContainer)}>{tongueTwister}</div>
+                <div
+                  className={classNames(styles.wordContainer)}
+                  style={{ display: 'flex', flexWrap: 'wrap', marginLeft: -8 }}
+                >
+                  {comparisonResult?.map((item, index) => (
+                    <span key={index} className={item.isEqual ? styles.green : styles.red}>
+                      {item.spokenWord}
+                    </span>
+                  ))}
+                </div>
               </div>
             </>
           )}
-          {/* {spokenWords.map((word, index) => {
-            const match =
-              !pronunciationCheck || reshuffledWords[index] === spokenWords[index]?.transcript;
-
-            return (
-              <div className={styles.wordContainer} key={`${word}_${index}`}>
-                <div className={classNames(styles.index, styles.grey)}>{`${index + 1}.`}</div>
-                {!match && reshuffledWords[index] && (
-                  <div className={styles.grey}>{`(${reshuffledWords[index]})\u00A0`}</div>
-                )}
-                <div className={match ? styles.black : styles.red}>{word.transcript}</div>
-                <div className={styles.grow} />
-                <div className={styles.grey}>{`${(word.confidence * (match ? 100 : 0)).toFixed(
-                  2,
-                )}%`}</div>
-              </div>
-            );
-          })}
-          {microphoneStatus === 'on' &&
-            pronunciationCheck &&
-            reshuffledWords[spokenWords.length] && (
-              <div
-                key={reshuffledWords[spokenWords.length]}
-                className={classNames(styles.wordContainer, styles.micButtonContainerOn)}
-              >
-                <div className={classNames(styles.index, styles.grey)}>{`${
-                  spokenWords.length + 1
-                }.`}</div>
-                <div className={styles.grey}>{reshuffledWords[spokenWords.length]}</div>
-              </div>
-            )}
-          {spokenWords.length > 0 && (
-            <div className={classNames(styles.wordContainer)}>
-              <div className={styles.grow} />
-              <div
-                className={classNames(limitExceeded ? styles.black : styles.grey, styles.totalLine)}
-              >{`${(averageConfidence * 100).toFixed(2)}%`}</div>
-            </div>
-          )}*/}
         </div>
       </div>
     </>

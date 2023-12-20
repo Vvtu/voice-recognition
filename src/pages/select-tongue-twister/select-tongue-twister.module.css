@@ -19,6 +19,7 @@
 }
 
 .micButtonContainer {
+  margin: 16px;
   height: var(--button-height);
   width: 200px;
 
