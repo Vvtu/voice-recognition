@@ -4,9 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 
 import classNames from 'classnames';
 
-import { ROBOT_VOICE_PARAM, PRONUNCIATION_CHECK, FORBIDDEN_VOICES_SET } from '@/app-constants';
-import checkIconChecked from '@/icons/check-icon-checked.svg';
-import checkIconEmpty from '@/icons/check-icon-empty.svg';
+import { ROBOT_VOICE_PARAM, FORBIDDEN_VOICES_SET } from '@/app-constants';
 import radioButtonUnchecked from '@/icons/radio-button-unchecked.svg';
 import radioButton from '@/icons/radio-button.svg';
 import panelStyles from '@/pages/panel.module.css';
