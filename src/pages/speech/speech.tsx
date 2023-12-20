@@ -21,7 +21,7 @@ import micIcon from './mic.svg';
 import styles from './speech.module.css';
 
 function clearWord(word: string) {
-  const word1 = word.replace(/[.|,]/g, ' ');
+  const word1 = word.replace(/[.|,|–|!|?]/g, ' ');
   const arr = word1.split(' ').filter((w) => w !== '' && w != ' ');
 
   return arr;
@@ -159,7 +159,21 @@ export function Speech() {
       const originWords = clearWord(tongueTwister);
 
       const result = originWords.map((originWord, index) => {
+        console.log('%c Speech originWord = ', 'color: brown', originWord); //TODO - delete vvtu
+        console.log('%c Speech spWords[index] = ', 'color: #bada55', spWords[index]); //TODO - delete vvtu
+        console.log(
+          '%c Speech originWord.toUpperCase() = ',
+          'color: #bada55',
+          originWord.toUpperCase(),
+        ); //TODO - delete vvtu
+        console.log(
+          '%c Speech spWords[index].toUpperCase() = ',
+          'color: #bada55',
+          (spWords[index] ?? '').toUpperCase(),
+        ); //TODO - delete vvtu
+
         const isEqual = originWord.toUpperCase() === (spWords[index] ?? '').toUpperCase();
+        console.log('%c Speech isEqual = ', 'color: #bada55', isEqual); //TODO - delete vvtu
 
         return {
           isEqual,
