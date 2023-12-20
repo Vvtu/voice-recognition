@@ -35,6 +35,7 @@ module.exports = {
     'filename-rules',
   ],
   rules: {
+    '@typescript-eslint/ban-ts-comment': 'off',
     'react/react-in-jsx-scope': 'off',
     'react/no-unescaped-entities': 'off',
     'prettier/prettier': [
