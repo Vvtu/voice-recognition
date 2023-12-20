@@ -1,4 +1,4 @@
-import { useSearchParams } from 'react-router-dom';
+import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 
 import classNames from 'classnames';
 
@@ -11,7 +11,8 @@ import { getNewSearchParams } from '@/utils/get-new-search-params';
 
 import styles from './select-tongue-twister.module.css';
 export function SelectTongueTwister() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const languageParam = (searchParams.get(LANGUAGE_PARAM) ??
     ILanguageParam.russian) as ILanguageParam;
@@ -23,12 +24,21 @@ export function SelectTongueTwister() {
   function handleItemClicked(index: string) {
     const newParams = getNewSearchParams(searchParams);
     newParams[TONGUE_TWISTER_INDEX] = index;
-    setSearchParams(newParams);
+
+    navigate({
+      pathname: '/',
+      search: `?${createSearchParams(newParams)}`,
+    });
   }
 
   return (
     <div>
-      <button className={classNames(styles.micButtonContainer)} onClick={() => {}}>
+      <button
+        className={classNames(styles.micButtonContainer)}
+        onClick={() => {
+          navigate(-1);
+        }}
+      >
         <div className={styles.micButton}>
           <img src={arrowLeftIcon} alt="иконка 'Назад'" />
           {'Назад'}
