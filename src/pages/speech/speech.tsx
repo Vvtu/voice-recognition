@@ -205,25 +205,34 @@ export function Speech() {
         <SettingsPanel voices={voices} />
         <div className={classNames(panelStyles.panelColorAndBorder, styles.flexGrow)}>
           {tongueTwister && (
-            <div style={{ marginLeft: '16px', display: 'flex', alignItems: 'center' }}>
-              <PlayButton
-                buttonState={playOrigin}
-                setButtonState={(w: IPlayButtonState) => {
-                  if (w === 'play') {
-                    setPlayOrigin('play');
-                    const voice = voices[robotVoiceParam] ?? voices[0];
-                    voice &&
-                      tongueTwister &&
-                      handleTextToSpeech(tongueTwister, voice).then(() => {
-                        setPlayOrigin('pause');
-                      });
-                  }
+            <>
+              <div
+                style={{
+                  margin: '16px 0 16px 16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '16px',
                 }}
-              />
-              <div className={classNames(styles.wordContainer, styles.blueColor)}>
-                {tongueTwister}
+              >
+                <PlayButton
+                  buttonState={playOrigin}
+                  setButtonState={(w: IPlayButtonState) => {
+                    if (w === 'play') {
+                      setPlayOrigin('play');
+                      const voice = voices[robotVoiceParam] ?? voices[0];
+                      voice &&
+                        tongueTwister &&
+                        handleTextToSpeech(tongueTwister, voice).then(() => {
+                          setPlayOrigin('pause');
+                        });
+                    }
+                  }}
+                />
+                <div className={classNames(styles.wordContainer, styles.blueColor)}>
+                  {tongueTwister}
+                </div>
               </div>
-            </div>
+            </>
           )}
           {/* {spokenWords.map((word, index) => {
             const match =
