@@ -6,6 +6,12 @@
   gap: 20px;
 }
 
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 .panelColorAndBorder {
   border-radius: var(--border-radius-15);
   background-color: #fff;
@@ -51,12 +57,13 @@
 
 .itemSubContainer {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
   cursor: pointer;
 }
 
 .itemText {
+  margin: 8px 0 32px 0;
   color: #4a4a4a;
   font-family: Verdana;
   font-size: var(--font-size-22);

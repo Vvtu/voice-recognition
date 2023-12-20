@@ -36,7 +36,7 @@ export function SelectTongueTwister() {
         </div>
       </button>
       <div className={classNames(styles.layout, styles.panelColorAndBorder)}>
-        <div>
+        <div className={styles.list}>
           <div className={styles.header}>Настройки</div>
 
           {tongueTwisters.map((twister) => (
