@@ -1,14 +1,13 @@
-import { useEffect } from 'react';
-
 import { useSearchParams } from 'react-router-dom';
 
 import classNames from 'classnames';
 
-import { LANGUAGE_PARAM, ILanguageParam } from '@/app-constants';
+import { LANGUAGE_PARAM, ILanguageParam, TONGUE_TWISTER_INDEX } from '@/app-constants';
 import arrowLeftIcon from '@/icons/arrow-left-square.svg';
 import radioButtonUnchecked from '@/icons/radio-button-unchecked.svg';
 import radioButton from '@/icons/radio-button.svg';
 import { pronunciationWords } from '@/pronunciation-words/pronunciation-words';
+import { getNewSearchParams } from '@/utils/get-new-search-params';
 
 import styles from './select-tongue-twister.module.css';
 export function SelectTongueTwister() {
@@ -16,16 +15,16 @@ export function SelectTongueTwister() {
 
   const languageParam = (searchParams.get(LANGUAGE_PARAM) ??
     ILanguageParam.russian) as ILanguageParam;
+
+  const tongueTwisterIndex = searchParams.get(TONGUE_TWISTER_INDEX);
+
   const tongueTwisters = pronunciationWords[languageParam] ?? ([] as string[]);
 
-  console.log('%c Render SelectTongueTwister = ', 'color: orange'); //TODO - delete vvtu
-  useEffect(() => {
-    console.log('%c Mount SelectTongueTwister = ', 'color: brown'); //TODO - delete vvtu
-
-    return () => {
-      console.log('%c Unmount SelectTongueTwister = ', 'color: red'); //TODO - delete vvtu
-    };
-  }, []);
+  function handleItemClicked(index: string) {
+    const newParams = getNewSearchParams(searchParams);
+    newParams[TONGUE_TWISTER_INDEX] = index;
+    setSearchParams(newParams);
+  }
 
   return (
     <div>
@@ -39,14 +38,14 @@ export function SelectTongueTwister() {
         <div className={styles.list}>
           <div className={styles.header}>Настройки</div>
 
-          {tongueTwisters.map((twister) => (
+          {tongueTwisters.map((twister, index) => (
             <div
               key={twister}
               className={styles.itemContainer}
-              onClick={() => {} /* handleItemClicked(value) */}
+              onClick={() => handleItemClicked(index.toString())}
             >
               <div className={styles.itemSubContainer}>
-                {twister === '333' ? (
+                {index.toString() === tongueTwisterIndex ? (
                   <img src={radioButton} alt="icon checked" width="40px" height="40px" />
                 ) : (
                   <img src={radioButtonUnchecked} alt="icon checked" width="40px" height="40px" />

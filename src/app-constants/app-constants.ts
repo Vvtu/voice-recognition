@@ -5,6 +5,7 @@ export const PROBABILITY_OF_ERROR = 0.3;
 export const LANGUAGE_PARAM = 'language';
 export const ROBOT_VOICE_PARAM = 'robotVoice';
 export const PRONUNCIATION_CHECK = 'pronunciationCheck';
+export const TONGUE_TWISTER_INDEX = 'tongueTwisterIndex';
 
 // eslint-disable-next-line no-shadow
 export enum ILanguageParam {
