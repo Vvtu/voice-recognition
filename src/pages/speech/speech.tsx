@@ -19,6 +19,7 @@ import { handleTextToSpeech } from '@/utils/handle-text-to-speech';
 
 import micIcon from './mic.svg';
 import styles from './speech.module.css';
+import stopIcon from './stop-icon.svg';
 
 function clearWord(word: string) {
   const word1 = word.replace(/[.|,|–|!|?]/g, ' ');
@@ -238,10 +239,13 @@ export function Speech() {
                   }}
                 >
                   <div className={styles.micButton}>
-                    <img src={micIcon} alt="micIcon" />
+                    <img
+                      src={microphoneStatus === 'off' ? micIcon : stopIcon}
+                      alt={microphoneStatus === 'off' ? 'micIcon' : 'stopIcon'}
+                    />
                   </div>
                 </button>
-
+                {/* Текст результат */}
                 <div
                   className={classNames(styles.wordContainer)}
                   style={{ display: 'flex', flexWrap: 'wrap', marginLeft: -8 }}

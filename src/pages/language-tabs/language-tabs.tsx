@@ -65,7 +65,7 @@ export function LanguageTabs() {
           });
         }}
       >
-        <div className={styles.micButton}>
+        <div className={styles.listIcon}>
           <img src={listIcon} alt="иконка 'Назад'" />
           {'Выбор скороговорки'}
         </div>
