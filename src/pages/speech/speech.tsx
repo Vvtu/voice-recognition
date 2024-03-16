@@ -68,10 +68,12 @@ export function Speech() {
 
   useEffect(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    // создание объекта запуска микрофона и распознавания речи
     let recognition: SpeechRecognition | undefined;
 
     try {
       recognition = new SpeechRecognition();
+      setBrowserIsSupported(true);
     } catch (e) {
       setBrowserIsSupported(false);
 
@@ -101,7 +103,7 @@ export function Speech() {
       if (robotVoiceParam !== -1) {
         recognition?.stop();
         const voice = voices[robotVoiceParam] ?? voices[0];
-
+        // Остановка распознавания для воспроизведение последней скороговорки и снова запуск процесса распознавания
         voice &&
           handleTextToSpeech(lastWord.transcript, voice).then(() => {
             recognition?.start();
@@ -134,6 +136,7 @@ export function Speech() {
     });
   }, [languageParam]);
 
+  // Проверка поддержки браузера методов распознавания речи
   if (browserIsSupported === false) {
     return (
       <div className={styles.centerContainer}>
@@ -217,6 +220,7 @@ export function Speech() {
                 </div>
               </div>
               <div className={styles.row}>
+                {/* Кнопка микрофона */}
                 <button
                   className={classNames(
                     styles.micButtonContainer,
